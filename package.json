@@ -11,6 +11,7 @@
         "start": "webpack-dev-server --open"
     },
     "dependencies": {
+        "easy-peasy": "^3.3.1",
         "formik": "^2.1.4",
         "history": "^4.10.1",
         "prop-types": "^15.7.2",

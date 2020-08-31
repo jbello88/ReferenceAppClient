@@ -1,18 +1,46 @@
-import React from 'react';
+import React from "react";
 
-import { accountService } from '@/_services';
+import { accountService } from "@/_services";
 
 function Home() {
-    const user = accountService.userValue;
-    
-    return (
-        <div className="p-4">
-            <div className="container">
-                <h1>Hi {user.firstName}!</h1>
-                <p>You're logged in with React & JWT!!</p>
-            </div>
-        </div>
-    );
+  //const user = accountService.userValue;
+
+  return (
+    <div className="p-4">
+      <div className="container">
+        <h1>This is the home-page</h1>
+        <p>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
+          rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
+          ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
+          sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
+          et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+          takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
+          amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+          invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
+          kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+          amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit
+          esse molestie consequat, vel illum dolore eu feugiat nulla facilisis
+          at vero eros et accumsan et iusto odio dignissim qui blandit praesent
+          luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+          nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+          volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+          ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+          Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+          molestie consequat, vel illum dolore eu feugiat nulla facilisis at
+          vero eros et accumsan et iusto odio dignissim qui blandit praesent
+          luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+          Nam liber tempor cum soluta nobis eleifend option congue nihil
+          imperdiet doming id quod mazim placerat facer
+        </p>
+      </div>
+    </div>
+  );
 }
 
 export { Home };
