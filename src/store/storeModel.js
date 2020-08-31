@@ -3,7 +3,7 @@ import accountStoreModel from "./accountsStoreModel";
 
 const storeModel = {
   pStore: pagesStoreModel,
-  aStore: accountsStoreModel,
+  aStore: accountStoreModel,
 };
 
 export default storeModel;

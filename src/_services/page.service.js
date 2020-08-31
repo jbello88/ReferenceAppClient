@@ -2,25 +2,17 @@ import config from "config";
 import { fetchWrapper, history } from "@/_helpers";
 const baseUrl = `${config.apiUrl}/pages`;
 
-export const pageService = {
-  getAll,
-  getById,
-  create,
-  update,
-  delete: _delete,
-};
-
 const getAll = async () => {
-  console.log("this is called");
+  /*   console.log("this is called");
   let pages = await fetch(baseUrl);
   pages = await pages.json();
-  return pages;
+  return pages; */
 };
 
 const getById = async (id) => {
-  let page = await fetch(baseUrl + id);
+  /*   let page = await fetch(baseUrl + id);
   page = await page.json();
-  return page;
+  return page; */
 };
 
 const create = async (page) => {
@@ -41,4 +33,10 @@ const _delete = async (page) => {
         return page; */
 };
 
-export default pageService;
+export const pageService = {
+  getAll,
+  getById,
+  create,
+  update,
+  delete: _delete,
+};

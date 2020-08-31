@@ -12,4 +12,4 @@ const accountsStoreModels = {
   }),
 };
 
-export default accountsStoreModel;
+export default accountsStoreModels;
