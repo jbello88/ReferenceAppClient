@@ -7,6 +7,7 @@ const pagesStoreModel = {
   page: null,
 
   addLoadedPages: action((state, pages) => {
+    console.log("Add loaded Pages");
     state.pages = pages;
   }),
 
@@ -18,7 +19,7 @@ const pagesStoreModel = {
   }),
 
   loadPages: thunk(async (actions, payload) => {
-    const pages = await pageService.getAllPages();
+    const pages = await pageService.getAll();
     console.log(pages);
     actions.addLoadedPages(pages);
   }),
@@ -35,8 +36,21 @@ const pagesStoreModel = {
     console.log(smallPage);
 
     if (!smallPage) return;
-    const page = await pageService.getPage(smallPage._id);
+    const page = await pageService.getById(smallPage._id);
     actions.setPage(page);
+  }),
+
+  updatePageContent: thunk(async (actions, payload, helpers) => {
+    const { slug, title, subtitle, content } = payload;
+    const localState = helpers.getState();
+    const toUpdate = {
+      title,
+      subtitle,
+      content,
+    };
+    const page = localState.cachedPages.get(slug);
+    const updatedPage = await pageService.update(page._id, toUpdate);
+    actions.setPage(updatedPage);
   }),
 };
 
