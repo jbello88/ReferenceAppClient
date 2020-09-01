@@ -21,7 +21,7 @@ export default function MarkdownEditor({ val, updatedValue }) {
 
   return (
     <>
-      <MarkdownEditor2 value={value} height="699" onChange={updateMarkdown} />
+      <MarkdownEditor2 value={value} height="500" onChange={updateMarkdown} />
     </>
   );
 }

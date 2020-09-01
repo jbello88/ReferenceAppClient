@@ -42,7 +42,11 @@ export default function Page() {
 
   return (
     <Container className="w-auto mt-5 ">
-      {true ? <button onClick={toogleEdit}>AAA</button> : null}
+      {true ? (
+        <button className="float-right" onClick={toogleEdit}>
+          AAA
+        </button>
+      ) : null}
       {modus === "show" ? <PageDisplay /> : null}
       {modus === "edit" ? <PageEdit page={page} /> : null}
     </Container>
