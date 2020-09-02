@@ -1,6 +1,7 @@
 import config from "config";
-import { fetchWrapper, history } from "@/_helpers";
+import { fetchWrapper } from "@/_helpers";
 const baseUrl = `${config.apiUrl}/pages`;
+const baseUrlComment = `${config.apiUrl}/comments`;
 
 const getAll = async () => {
   console.log("Get All was called with" + baseUrl);
@@ -15,10 +16,8 @@ const getById = async (id) => {
   return page;
 };
 const create = async (page) => {
-  // fetchWrapper.post(`${baseUrl} + "/" + revoke-token`, {});
-  /*        let page = await fetch(baseUrl +  id);
-    page = await page.json(); 
-    return page;  */
+  const newPage = fetchWrapper.post(`${baseUrl}`, page);
+  return newPage;
 };
 
 const update = async (id, page) => {
@@ -27,10 +26,36 @@ const update = async (id, page) => {
   return updatedPage;
 };
 
-const _delete = async (page) => {
-  /*     let page = await fetch(baseUrl +  id);
-        page = await page.json(); 
-        return page; */
+const updateComment = async (pageId, comment) => {
+  let updatedComment = await fetchWrapper.put(
+    `${baseUrlComment}/${pageId}`,
+    comment
+  );
+  return updatedComment;
+};
+
+const addComment = async (pageId, comment) => {
+  let updatedComment = await fetchWrapper.post(
+    `${baseUrlComment}/${pageId}`,
+    comment
+  );
+  return updatedComment;
+};
+
+const _delete = async (pageId) => {
+  let res = await fetchWrapper.delete(`${baseUrl}/${pageId}`);
+
+  return res;
+};
+
+const deleteComment = async (pageId, comment) => {
+  console.log("+++++++++++++++++++++++++++++++++++");
+  console.log(comment);
+  let res = await fetchWrapper.delete(
+    `${baseUrlComment}/${pageId}/${comment._id}`
+  );
+
+  return res;
 };
 
 export const pageService = {
@@ -39,4 +64,7 @@ export const pageService = {
   create,
   update,
   delete: _delete,
+  updateComment,
+  addComment,
+  deleteComment,
 };

@@ -10,14 +10,19 @@ import { Admin } from "@/admin";
 import { Account } from "@/account";
 import Pages from "../page/Pages";
 import Page from "../page/Page";
+import CommentEdit from "../page/CommentEdit";
 
 function App() {
   const { pathname } = useLocation();
   const [user, setUser] = useState({});
   const loadPages = useStoreActions((actions) => actions.pStore.loadPages);
+  const addAccount = useStoreActions((actions) => actions.aStore.addAccount);
 
   useEffect(() => {
-    const subscription = accountService.user.subscribe((x) => setUser(x));
+    const subscription = accountService.user.subscribe((x) => {
+      setUser(x);
+      addAccount(x);
+    });
     return subscription.unsubscribe;
   }, []);
 
@@ -40,6 +45,7 @@ function App() {
         <PrivateRoute path="/profile" component={Profile} />
         <PrivateRoute path="/admin" roles={[Role.Admin]} component={Admin} />
         <Route path="/account" component={Account} />
+        <Route path="/comment" component={CommentEdit} />
       </Switch>
     </div>
   );

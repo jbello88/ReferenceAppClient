@@ -1,12 +1,20 @@
 import React from "react";
-import { useStoreState } from "easy-peasy";
+import { useStoreState, useStoreActions } from "easy-peasy";
 import PageSummary from "./PageSummary";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { useHistory } from "react-router-dom";
 
 export default function Pages() {
   const pages = useStoreState((s) => s.pStore.pages);
+  const createPage = useStoreActions((a) => a.pStore.createPage);
+  const history = useHistory();
+
+  const addPageHandler = () => {
+    createPage();
+    history.push("/topic/" + page.slug);
+  };
 
   if (pages?.length === 0) {
     return (
@@ -25,6 +33,7 @@ export default function Pages() {
           </Col>
         </Row>
       ))}
+      <button onClick={addPageHandler}>Add Page</button>
     </Container>
   );
 }

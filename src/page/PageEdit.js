@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import MarkdownEditor from "./MarkdownEditor";
-import { useFormik, Form } from "formik";
+import { useForm } from "react-hook-form";
 
 export default function PageEdit({ page }) {
   //const page = useStoreState((state) => state.pStore.page);
@@ -10,46 +9,38 @@ export default function PageEdit({ page }) {
     (actions) => actions.pStore.updatePageContent
   );
 
+  const defaultValues = {
+    title: "",
+    slug: "",
+    subtitle: "",
+  };
+
+  const { register, handleSubmit } = useForm({ defaultValues: defaultValues });
+
   if (!page) {
     return <div>loading</div>;
   }
 
-  const { handleSubmit, handleChange, values } = useFormik({
-    initialValues: { title: page.title, subtitle: page.subtitle },
-    onSubmit: (values) => {
-      const para = {
-        slug: page.slug,
-        title: values.title,
-        subtitle: values.subtitle,
-        content: eduRef.current,
-      };
-
-      console.log(para);
-      updatePageContent(para);
-    },
-  });
+  defaultValues.title = page.title;
+  defaultValues.subtitle = page.subtitle;
+  defaultValues.slug = page.slug;
 
   const eduRef = useRef();
-  const titelRef = useRef();
-  const subtitelRef = useRef();
 
-  //const title = "This is the title";
-  //const subtitle = "This is the subtitle";
-
-  const saveText = () => {
-    /*     const para = {
+  const onSubmit = (data) => {
+    const para = {
       slug: page.slug,
-      title: titelRef.current.value,
-      subtitle: subtitelRef.current.value,
-      content: eduRef.current,
+      title: data.title,
+      subtitle: data.subtitle,
+      content: eduRef?.current,
     };
 
-    console.log(para); */
-    //updatePageContent(para);
+    console.log(para);
+    updatePageContent(para);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="form-group input-group-lg">
         <label htmlFor="title">Title</label>
         <input
@@ -57,8 +48,18 @@ export default function PageEdit({ page }) {
           className="form-control"
           name="title"
           type="text"
-          value={values.title}
-          onChange={handleChange}
+          ref={register}
+        />
+      </div>
+
+      <div className="form-group ">
+        <label htmlFor="slug">Slug</label>
+        <input
+          id="slug"
+          className="form-control"
+          name="slug"
+          type="text"
+          ref={register}
         />
       </div>
 
@@ -66,14 +67,13 @@ export default function PageEdit({ page }) {
         <label htmlFor="title">Subtitle</label>
         <textarea
           id="subtitle"
-          row="4"
+          rows="4"
           name="subtitle"
           className="form-control"
-          type="text"
-          value={values.subtitle}
-          onChange={handleChange}
+          ref={register}
         />
       </div>
+
       <div className="form-group">
         {" "}
         <label htmlFor="content">Content</label>
@@ -83,9 +83,8 @@ export default function PageEdit({ page }) {
           updatedValue={eduRef}
         />{" "}
       </div>
-      <button className="btn btn-primary" onClick={saveText}>
-        Save
-      </button>
+
+      <input type="submit" className="btn btn-primary" />
     </form>
   );
 }

@@ -14,10 +14,16 @@ export default function Page() {
   let { slug } = useParams();
   const page = useStoreState((state) => state.pStore.page);
   const loadPage = useStoreActions((a) => a.pStore.loadPage);
-  const [modus, setModus] = useState("edit");
+  const [modus, setModus] = useState("show");
   const user = accountService.user;
 
+  console.log(user);
+
   useEffect(() => {
+    if (slug === "NewPage") {
+      setModus("edit");
+      return;
+    }
     loadPage(slug);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -35,7 +41,7 @@ export default function Page() {
     setModus("edit");
   };
 
-  console.log(user.value);
+  console.log(user?.value);
   //const markeddn = marked(page.content);
   //console.log(page);
   //  <MarkdownEditor val={page.content} />
