@@ -29,7 +29,8 @@ export default function PageEdit({ page }) {
 
   const onSubmit = (data) => {
     const para = {
-      slug: page.slug,
+      _id: page._id,
+      slug: data.slug,
       title: data.title,
       subtitle: data.subtitle,
       content: eduRef?.current,

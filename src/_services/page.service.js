@@ -4,7 +4,6 @@ const baseUrl = `${config.apiUrl}/pages`;
 const baseUrlComment = `${config.apiUrl}/comments`;
 
 const getAll = async () => {
-  console.log("Get All was called with" + baseUrl);
   let pages = await fetch(baseUrl);
   pages = await pages.json();
   return pages;
@@ -21,7 +20,6 @@ const create = async (page) => {
 };
 
 const update = async (id, page) => {
-  console.log("Update started");
   let updatedPage = await fetchWrapper.put(`${baseUrl}/${id}`, page);
   return updatedPage;
 };
@@ -49,8 +47,6 @@ const _delete = async (pageId) => {
 };
 
 const deleteComment = async (pageId, comment) => {
-  console.log("+++++++++++++++++++++++++++++++++++");
-  console.log(comment);
   let res = await fetchWrapper.delete(
     `${baseUrlComment}/${pageId}/${comment._id}`
   );

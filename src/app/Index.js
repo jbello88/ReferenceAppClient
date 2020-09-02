@@ -30,8 +30,6 @@ function App() {
     loadPages();
   }, []);
 
-  console.log(pathname);
-
   return (
     <div className={"app-container bg-light"}>
       <Nav />

@@ -5,7 +5,7 @@ export default function Comments({ comments } = []) {
   return (
     <>
       {comments.map((c) => (
-        <Comment data={c} />
+        <Comment key={c._id} data={c} />
       ))}
     </>
   );

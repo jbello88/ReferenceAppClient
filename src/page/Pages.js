@@ -13,7 +13,7 @@ export default function Pages() {
 
   const addPageHandler = () => {
     createPage();
-    history.push("/topic/" + page.slug);
+    history.push("/topic/newPage");
   };
 
   if (pages?.length === 0) {

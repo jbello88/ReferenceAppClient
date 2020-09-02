@@ -21,7 +21,7 @@ const pagesStoreModel = {
     state.comment = newComment;
   }),
 
-  createPage: action((state, user) => {
+  createPage: action((state) => {
     const newPage = {
       title: "New Page Title",
       slug: "newPage",
@@ -36,6 +36,10 @@ const pagesStoreModel = {
     state.comment = comment;
   }),
 
+  clearComment: action((state) => {
+    state.comment = null;
+  }),
+
   setPage: action((state, page) => {
     if (!state.cachedPages.has(page.slug)) {
       state.cachedPages.set(page.slug, page);
@@ -43,6 +47,12 @@ const pagesStoreModel = {
 
     state.page = page;
     state.pages = state.pages.map((p) => (p._id === page._id ? page : p));
+  }),
+
+  addPage: action((state, page) => {
+    state.cachedPages.set(page.slug, page);
+    state.pages.push(page);
+    state.page = page;
   }),
 
   replaceComment: action((state, comment) => {
@@ -58,17 +68,13 @@ const pagesStoreModel = {
   }),
 
   addComment: action((state, comment) => {
-    //console.log(state.page.comments.length);
     state.page.comments.push(comment);
-    //state.cachedPages.set(page.slug, page);
-    //console.log(state.page.comments.length);
   }),
 
   // Thunks
 
   loadPages: thunk(async (actions, payload) => {
     const pages = await pageService.getAll();
-    console.log(pages);
     actions.addLoadedPages(pages);
   }),
 
@@ -81,7 +87,6 @@ const pagesStoreModel = {
     } */
 
     const smallPage = localState.pages.find((p) => p.slug === slug);
-    console.log(smallPage);
 
     if (!smallPage) return;
     const page = await pageService.getById(smallPage._id);
@@ -89,7 +94,7 @@ const pagesStoreModel = {
   }),
 
   updatePageContent: thunk(async (actions, payload, helpers) => {
-    const { slug, title, subtitle, content } = payload;
+    const { _id, slug, title, subtitle, content } = payload;
     const localState = helpers.getState();
     const toUpdate = {
       slug,
@@ -97,20 +102,19 @@ const pagesStoreModel = {
       subtitle,
       content,
     };
-    const page = localState.cachedPages.get(slug);
-    if (page) {
+
+    if (_id) {
       // this is an update
-      const updatedPage = await pageService.update(page._id, toUpdate);
+      const updatedPage = await pageService.update(_id, toUpdate);
       actions.setPage(updatedPage);
     } else {
-      const newPage = await pageService.update(page._id, toUpdate);
-      actions.setPage(updatedPage);
+      const newPage = await pageService.create(toUpdate);
+      actions.addPage(newPage);
     }
   }),
 
   saveComment: thunk(async (actions, comment, helpers) => {
     const localState = helpers.getState();
-    console.log(comment);
 
     if (comment._id) {
       // this is an update
@@ -124,7 +128,7 @@ const pagesStoreModel = {
         localState.page._id,
         comment
       );
-      console.log(updatedComment);
+
       actions.addComment(updatedComment);
     }
   }),

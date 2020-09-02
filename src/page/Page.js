@@ -8,16 +8,15 @@ import Col from "react-bootstrap/Col";
 import MarkdownEditor from "./MarkdownEditor";
 import PageDisplay from "./PageDisplay";
 import PageEdit from "./PageEdit";
-import { accountService } from "@/_services";
+
+import { MdModeEdit } from "react-icons/md";
 
 export default function Page() {
   let { slug } = useParams();
   const page = useStoreState((state) => state.pStore.page);
+  const user = useStoreState((state) => state.aStore.account);
   const loadPage = useStoreActions((a) => a.pStore.loadPage);
   const [modus, setModus] = useState("show");
-  const user = accountService.user;
-
-  console.log(user);
 
   useEffect(() => {
     if (slug === "NewPage") {
@@ -41,16 +40,11 @@ export default function Page() {
     setModus("edit");
   };
 
-  console.log(user?.value);
-  //const markeddn = marked(page.content);
-  //console.log(page);
-  //  <MarkdownEditor val={page.content} />
-
   return (
     <Container className="w-auto mt-5 ">
       {true ? (
         <button className="float-right" onClick={toogleEdit}>
-          AAA
+          <MdModeEdit />
         </button>
       ) : null}
       {modus === "show" ? <PageDisplay /> : null}
