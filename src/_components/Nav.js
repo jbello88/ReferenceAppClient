@@ -19,7 +19,7 @@ function Nav() {
   return (
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
-        <div className="navbar-nav">
+        <div className="navbar-nav mr-auto">
           <NavLink exact to="/" className="nav-item nav-link">
             Home
           </NavLink>
@@ -34,13 +34,16 @@ function Nav() {
               Admin
             </NavLink>
           )}
-
+        </div>
+        <div className="navbar-nav ml-auto">
+          {user && (
+            <span className="navbar-text mr-4">User: {user.userName}</span>
+          )}
           {user && (
             <a onClick={accountService.logout} className="nav-item nav-link ">
               Logout
             </a>
           )}
-
           {!user && (
             <a
               className="nav-item nav-link"

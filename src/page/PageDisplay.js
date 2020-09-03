@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import ReactMarkdown from "react-markdown";
 import { useHistory } from "react-router-dom";
@@ -23,7 +22,7 @@ export default function PageDisplay() {
     <>
       <h2>{page.title}</h2>
 
-      <ReactMarkdown source={page.content} />
+      <ReactMarkdown source={page.content} escapeHtml={false} />
       <hr />
       <div>
         <Row>

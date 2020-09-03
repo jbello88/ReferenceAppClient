@@ -3,6 +3,7 @@ import { useStoreState, useStoreActions } from "easy-peasy";
 import MarkdownEditor from "./MarkdownEditor";
 import { useForm } from "react-hook-form";
 import { MdSave } from "react-icons/md";
+import { FileUploader } from "./FileUploader";
 
 export default function PageEdit({ page }) {
   //const page = useStoreState((state) => state.pStore.page);
@@ -44,53 +45,55 @@ export default function PageEdit({ page }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="form-group input-group-lg">
-        <label htmlFor="title">Title</label>
-        <input
-          id="title"
-          className="form-control"
-          name="title"
-          type="text"
-          ref={register}
-        />
-      </div>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <button type="submit" className="btn btn-light float-right ">
+          <MdSave />
+        </button>
+        <div className="form-group input-group-lg">
+          <label htmlFor="title">Title</label>
+          <input
+            id="title"
+            className="form-control"
+            name="title"
+            type="text"
+            ref={register}
+          />
+        </div>
 
-      <div className="form-group ">
-        <label htmlFor="slug">Slug</label>
-        <input
-          id="slug"
-          className="form-control"
-          name="slug"
-          type="text"
-          ref={register}
-        />
-      </div>
+        <div className="form-group ">
+          <label htmlFor="slug">Slug</label>
+          <input
+            id="slug"
+            className="form-control"
+            name="slug"
+            type="text"
+            ref={register}
+          />
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="title">Subtitle</label>
-        <textarea
-          id="subtitle"
-          rows="4"
-          name="subtitle"
-          className="form-control"
-          ref={register}
-        />
-      </div>
+        <div className="form-group">
+          <label htmlFor="title">Subtitle</label>
+          <textarea
+            id="subtitle"
+            rows="4"
+            name="subtitle"
+            className="form-control"
+            ref={register}
+          />
+        </div>
 
-      <div className="form-group">
-        {" "}
-        <label htmlFor="content">Content</label>
-        <MarkdownEditor
-          id="content"
-          val={page.content}
-          updatedValue={eduRef}
-        />{" "}
-      </div>
-
-      <button type="submit" className="btn btn-light">
-        <MdSave />
-      </button>
-    </form>
+        <div className="form-group">
+          {" "}
+          <label htmlFor="content">Content</label>
+          <MarkdownEditor
+            id="content"
+            val={page.content}
+            updatedValue={eduRef}
+          />{" "}
+        </div>
+      </form>
+      <FileUploader className="m-3" />
+    </>
   );
 }
