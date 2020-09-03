@@ -1,14 +1,20 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import Card from "react-bootstrap/Card";
 
 export default function PageSummary({ page }) {
   const history = useHistory();
   console.log(page);
 
   return (
-    <div className="m-4" onClick={() => history.push("/topic/" + page.slug)}>
-      <h3>{page.title}</h3>
-      <p>{page.subtitle}</p>
-    </div>
+    <Card
+      className="mb-3 mx-5 p-3"
+      onClick={() => history.push("/topic/" + page.slug)}
+    >
+      <Card.Body>
+        <Card.Title>{page.title}</Card.Title>
+        <Card.Subtitle>{page.subtitle}</Card.Subtitle>
+      </Card.Body>
+    </Card>
   );
 }

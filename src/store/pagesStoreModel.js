@@ -4,7 +4,6 @@ import { commentService } from "@/_services";
 
 const pagesStoreModel = {
   pages: [],
-  cachedPages: new Map(),
   page: null,
   comment: null,
 
@@ -32,6 +31,11 @@ const pagesStoreModel = {
     state.page = newPage;
   }),
 
+  removePage: action((state, page) => {
+    state.pages = state.pages.filter((p) => p._id !== page._id);
+    state.page = null;
+  }),
+
   editComment: action((state, comment) => {
     state.comment = comment;
   }),
@@ -41,16 +45,11 @@ const pagesStoreModel = {
   }),
 
   setPage: action((state, page) => {
-    if (!state.cachedPages.has(page.slug)) {
-      state.cachedPages.set(page.slug, page);
-    }
-
     state.page = page;
     state.pages = state.pages.map((p) => (p._id === page._id ? page : p));
   }),
 
   addPage: action((state, page) => {
-    state.cachedPages.set(page.slug, page);
     state.pages.push(page);
     state.page = page;
   }),
@@ -110,6 +109,13 @@ const pagesStoreModel = {
     } else {
       const newPage = await pageService.create(toUpdate);
       actions.addPage(newPage);
+    }
+  }),
+
+  deletePage: thunk(async (actions, page, helpers) => {
+    if (page._id) {
+      await pageService.delete(page._id);
+      actions.removePage(page);
     }
   }),
 

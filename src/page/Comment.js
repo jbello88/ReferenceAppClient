@@ -21,16 +21,18 @@ export default function Comment({ data }) {
   };
 
   return (
-    <Card className="m-3">
+    <Card className="mb-3">
       <Card.Body>
         <Card.Title>Comment by {data.userName}</Card.Title>
         <Card.Text>{data.content}</Card.Text>
-        <button className="btn btn-light" onClick={handleEdit}>
-          <MdModeEdit />
-        </button>{" "}
-        <button className="btn btn-light" onClick={handleDelete}>
-          <MdDelete />
-        </button>
+        <div className="float-right">
+          <button className="btn btn-light" onClick={handleEdit}>
+            <MdModeEdit />
+          </button>{" "}
+          <button className="btn btn-light" onClick={handleDelete}>
+            <MdDelete />
+          </button>{" "}
+        </div>
       </Card.Body>
     </Card>
   );

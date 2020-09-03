@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import MarkdownEditor from "./MarkdownEditor";
 import { useForm } from "react-hook-form";
+import { MdSave } from "react-icons/md";
 
 export default function PageEdit({ page }) {
   //const page = useStoreState((state) => state.pStore.page);
@@ -14,6 +15,8 @@ export default function PageEdit({ page }) {
     slug: "",
     subtitle: "",
   };
+
+  //     <input type="submit"  className="btn btn-primary" />
 
   const { register, handleSubmit } = useForm({ defaultValues: defaultValues });
 
@@ -85,7 +88,9 @@ export default function PageEdit({ page }) {
         />{" "}
       </div>
 
-      <input type="submit" className="btn btn-primary" />
+      <button type="submit" className="btn btn-light">
+        <MdSave />
+      </button>
     </form>
   );
 }

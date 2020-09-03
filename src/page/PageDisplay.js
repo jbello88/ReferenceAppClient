@@ -4,7 +4,9 @@ import { useStoreState, useStoreActions } from "easy-peasy";
 import ReactMarkdown from "react-markdown";
 import { useHistory } from "react-router-dom";
 import Comments from "../page/Comments";
-import { MdAddCircleOutline } from "react-icons/md";
+import { MdAdd } from "react-icons/md";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 export default function PageDisplay() {
   const page = useStoreState((state) => state.pStore.page);
@@ -20,19 +22,29 @@ export default function PageDisplay() {
   return (
     <>
       <h2>{page.title}</h2>
-      <h4>{page.subtitle}</h4>
+
       <ReactMarkdown source={page.content} />
       <hr />
-      <div className="display-flex">
-        <h4>
-          Comments{" "}
-          <button className="btn btn-light" onClick={addCommentHandler}>
-            <MdAddCircleOutline />
-          </button>{" "}
-        </h4>
+      <div>
+        <Row>
+          <Col>
+            <h4 className="mt-2">Comments</h4>
+          </Col>
+          <Col>
+            <button
+              className="float-right btn btn-light"
+              onClick={addCommentHandler}
+            >
+              <MdAdd />
+            </button>
+          </Col>
+        </Row>
       </div>
 
-      <Comments comments={page.comments ? page.comments : []} />
+      <Comments
+        className="float-none"
+        comments={page.comments ? page.comments : []}
+      />
     </>
   );
 }
