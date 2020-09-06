@@ -14,18 +14,13 @@ import "./styles.less";
 //import { configureFakeBackend } from "./_helpers";
 //configureFakeBackend();
 
-// attempt silent token refresh before startup
-accountService.refreshToken().finally(startApp);
-
-function startApp() {
-  render(
-    <React.StrictMode>
-      <StoreProvider store={store}>
-        <Router history={history}>
-          <App />
-        </Router>
-      </StoreProvider>
-    </React.StrictMode>,
-    document.getElementById("app")
-  );
-}
+render(
+  <React.StrictMode>
+    <StoreProvider store={store}>
+      <Router history={history}>
+        <App />
+      </Router>
+    </StoreProvider>
+  </React.StrictMode>,
+  document.getElementById("app")
+);

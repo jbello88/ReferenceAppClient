@@ -1,7 +1,7 @@
 import { alertService } from "@/_services";
 const baseUrl = "http://localhost:4000/upload";
 
-const fileService = {
+export const fileService = {
   uploadFile: async (formData) => {
     console.log("file upload service");
 
@@ -26,7 +26,5 @@ const fileService = {
     }
   },
 };
-
-export default fileService;
 
 //  headers: { "Content-Type": "multipart/form-data" },

@@ -46,7 +46,7 @@ export default function Page() {
 
   return (
     <Container className="w-auto mt-5 ">
-      {true ? (
+      {user?.role === "Admin" ? (
         <div className="float-right">
           {modus === "show" ? (
             <button className="btn btn-light" onClick={handleDelete}>

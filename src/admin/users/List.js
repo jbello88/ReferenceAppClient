@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-import { accountService } from "@/_services";
+import { useStoreState, useStoreActions } from "easy-peasy";
 
 function List({ match }) {
+  const users = useStoreState((s) => s.aStore.accounts);
+  const getAllAccounts = useStoreActions((a) => a.aStore.getAllAccounts);
+  const deleteAccount = useStoreActions((a) => a.aStore.deleteAccount);
   const { path } = match;
-  const [users, setUsers] = useState(null);
 
   useEffect(() => {
-    accountService.getAll().then((x) => setUsers(x));
+    getAllAccounts();
   }, []);
 
   function deleteUser(id) {
@@ -20,9 +21,7 @@ function List({ match }) {
         return x;
       })
     );
-    accountService.delete(id).then(() => {
-      setUsers((users) => users.filter((x) => x.id !== id));
-    });
+    deleteAccount(id);
   }
 
   return (

@@ -1,16 +1,15 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-
-import { accountService } from "@/_services";
+import { useStoreState, useStoreActions } from "easy-peasy";
 
 function PrivateRoute({ component: Component, roles, ...rest }) {
+  const account = useStoreState((s) => s.aStore.account);
   return (
     <Route
       {...rest}
       render={(props) => {
         console.log("Private Route");
-        const user = accountService.userValue;
-        if (!user) {
+        if (!account) {
           // not logged in so redirect to login page with the return url
           return (
             <Redirect
@@ -24,7 +23,7 @@ function PrivateRoute({ component: Component, roles, ...rest }) {
         }
 
         // check if route is restricted by role
-        if (roles && roles.indexOf(user.role) === -1) {
+        if (roles && roles.indexOf(account.role) === -1) {
           // role not authorized so redirect to home page
           return <Redirect to={{ pathname: "/" }} />;
         }

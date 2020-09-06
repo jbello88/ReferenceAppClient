@@ -29,14 +29,14 @@ export default function PageDisplay() {
           <Col>
             <h4 className="mt-2">Comments</h4>
           </Col>
-          <Col>
+          (user ? <Col>
             <button
               className="float-right btn btn-light"
               onClick={addCommentHandler}
             >
               <MdAdd />
             </button>
-          </Col>
+          </Col>: null)
         </Row>
       </div>
 

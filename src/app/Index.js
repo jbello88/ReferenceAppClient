@@ -14,19 +14,22 @@ import CommentEdit from "../page/CommentEdit";
 
 function App() {
   const { pathname } = useLocation();
-  const [user, setUser] = useState({});
   const loadPages = useStoreActions((actions) => actions.pStore.loadPages);
-  const addAccount = useStoreActions((actions) => actions.aStore.addAccount);
+  const setAccount = useStoreActions((actions) => actions.aStore.setAccount);
+  const refreshToken = useStoreActions(
+    (actions) => actions.aStore.refreshToken
+  );
 
-  useEffect(() => {
-    const subscription = accountService.user.subscribe((x) => {
+  /*   useEffect(() => {
+    const subscription = accountXXXXService.user.subscribe((x) => {
       setUser(x);
       addAccount(x);
     });
     return subscription.unsubscribe;
   }, []);
-
+ */
   useEffect(() => {
+    refreshToken();
     loadPages();
   }, []);
 

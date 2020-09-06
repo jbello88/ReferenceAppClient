@@ -2,10 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-
-import { accountService, alertService } from "@/_services";
+import { useStoreState, useStoreActions } from "easy-peasy";
+import { alertService } from "@/_services";
 
 function Register({ history }) {
+  const register = useStoreActions((a) => a.aStore.register);
   const initialValues = {
     title: "",
     firstName: "",
@@ -29,8 +30,7 @@ function Register({ history }) {
 
   function onSubmit(fields, { setStatus, setSubmitting }) {
     setStatus();
-    accountService
-      .register(fields)
+    register(fields)
       .then(() => {
         alertService.success(
           "Registration successful, please check your email for verification instructions",

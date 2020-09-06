@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import fileService from "../_services/file.Service";
+import {fileService} from "@/_services";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 

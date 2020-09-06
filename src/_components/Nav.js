@@ -1,20 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { NavLink, Route } from "react-router-dom";
 import { useStoreState, useStoreActions } from "easy-peasy";
-import { history } from "@/_helpers";
-
-import { Role } from "@/_helpers";
-import { accountService } from "@/_services";
+import { history, Role } from "@/_helpers";
 
 function Nav() {
-  const [user, setUser] = useState({});
-  const account = useStoreState((s) => s.aStore.account);
-  const logout = useStoreActions((a) => a.aStore.removeAccount);
-
-  useEffect(() => {
-    const subscription = accountService.user.subscribe((x) => setUser(x));
-    return subscription.unsubscribe;
-  }, []);
+  const user = useStoreState((s) => s.aStore.account);
+  const logout = useStoreActions((a) => a.aStore.logout);
 
   return (
     <div>
@@ -40,7 +31,7 @@ function Nav() {
             <span className="navbar-text mr-4">User: {user.userName}</span>
           )}
           {user && (
-            <a onClick={accountService.logout} className="nav-item nav-link ">
+            <a onClick={() => logout()} className="nav-item nav-link ">
               Logout
             </a>
           )}

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
-
-import { accountService } from "@/_services";
+import { useStoreState } from "easy-peasy";
 
 import { Login } from "./Login";
 import { Register } from "./Register";
@@ -11,10 +10,11 @@ import { ResetPassword } from "./ResetPassword";
 
 function Account({ history, match }) {
   const { path } = match;
+  const account = useStoreState((s) => s.aStore.account);
 
   useEffect(() => {
     // redirect to home if already logged in
-    if (accountService.userValue) {
+    if (account) {
       //  history.push('/');
     }
   }, []);

@@ -2,10 +2,16 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useStoreState, useStoreActions } from "easy-peasy";
 
-import { accountService, alertService } from "@/_services";
+import { alertService } from "@/_services";
 
 function AddEdit({ history, match }) {
+  const user = useStoreState((s) => s.aStore.editAccount);
+  const create = useStoreActions((a) => a.aStore.createAccount);
+  const update = useStoreActions((a) => a.aStore.updateAccount);
+  const getById = useStoreActions((a) => a.aStore.getAccountById);
+
   const { id } = match.params;
   const isAddMode = !id;
 
@@ -43,8 +49,7 @@ function AddEdit({ history, match }) {
   }
 
   function createUser(fields, setSubmitting) {
-    accountService
-      .create(fields)
+    create(fields)
       .then(() => {
         alertService.success("User added successfully", {
           keepAfterRouteChange: true,
@@ -58,8 +63,7 @@ function AddEdit({ history, match }) {
   }
 
   function updateUser(id, fields, setSubmitting) {
-    accountService
-      .update(id, fields)
+    update(id, fields)
       .then(() => {
         alertService.success("Update successful", {
           keepAfterRouteChange: true,
@@ -82,12 +86,13 @@ function AddEdit({ history, match }) {
         useEffect(() => {
           if (!isAddMode) {
             // get user and set form fields
-            accountService.getById(id).then((user) => {
-              const fields = ["userName", "email", "role"];
-              fields.forEach((field) =>
-                setFieldValue(field, user[field], false)
-              );
-            });
+            getById(id);
+            //.then((user) => {
+            //  const fields = ["userName", "email", "role"];
+            //  fields.forEach((field) =>
+            //    setFieldValue(field, user[field], false)
+            //  );
+            //});
           }
         }, []);
 

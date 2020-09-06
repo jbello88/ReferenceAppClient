@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useStoreState, useStoreActions } from "easy-peasy";
 
-import { accountService, alertService } from "@/_services";
+import { alertService } from "@/_services";
 
 function Update({ history }) {
-  const user = accountService.userValue;
+  const user = useStoreState((s) => s.aStore.account);
+  const update = useStoreActions((a) => a.aStore.updateAccount);
+  const deleteAccount = useStoreActions((a) => a.aStore.deleteAccount);
   const initialValues = {
     userName: user.userName,
     email: user.email,
@@ -27,8 +30,7 @@ function Update({ history }) {
 
   function onSubmit(fields, { setStatus, setSubmitting }) {
     setStatus();
-    accountService
-      .update(user.id, fields)
+    update(user.id, fields)
       .then(() => {
         alertService.success("Update successful", {
           keepAfterRouteChange: true,
@@ -45,9 +47,10 @@ function Update({ history }) {
   function onDelete() {
     if (confirm("Are you sure?")) {
       setIsDeleting(true);
-      accountService
-        .delete(user.id)
-        .then(() => alertService.success("Account deleted successfully"));
+
+      deleteAccount(user.id).then(() =>
+        alertService.success("Account deleted successfully")
+      );
     }
   }
 
