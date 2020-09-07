@@ -3,14 +3,17 @@ import { Link } from "react-router-dom";
 import queryString from "query-string";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useStoreState, useStoreActions } from "easy-peasy";
-
-import { alertService } from "@/_services";
+import { useStoreActions } from "easy-peasy";
 
 function ResetPassword({ history }) {
   const validateResetToken = useStoreActions(
     (a) => a.aStore.validateResetToken
   );
+
+  const alertSuccess = useStoreActions((a) => a.iStore.success);
+  const alertError = useStoreActions((a) => a.iStore.error);
+  const clearAlerts = useStoreActions((a) => a.iStore.clear);
+
   const resetPassword = useStoreActions((a) => a.aStore.resetPassword);
   const TokenStatus = {
     Validating: "Validating",
@@ -53,17 +56,18 @@ function ResetPassword({ history }) {
     });
 
     function onSubmit({ password, confirmPassword }, { setSubmitting }) {
-      alertService.clear();
+      clearAlerts();
       resetPassword({ token, password, confirmPassword })
         .then(() => {
-          alertService.success("Password reset successful, you can now login", {
-            keepAfterRouteChange: true,
+          alertSuccess({
+            message: "Password reset successful, you can now login",
+            options: { keepAfterRouteChange: true },
           });
           history.push("login");
         })
         .catch((error) => {
           setSubmitting(false);
-          alertService.error(error);
+          alertError({ message: error });
         });
     }
 

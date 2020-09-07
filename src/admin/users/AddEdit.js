@@ -4,13 +4,13 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useStoreState, useStoreActions } from "easy-peasy";
 
-import { alertService } from "@/_services";
-
 function AddEdit({ history, match }) {
   const user = useStoreState((s) => s.aStore.editAccount);
   const create = useStoreActions((a) => a.aStore.createAccount);
   const update = useStoreActions((a) => a.aStore.updateAccount);
   const getById = useStoreActions((a) => a.aStore.getAccountById);
+  const alertSuccess = useStoreActions((a) => a.iStore.success);
+  const alertError = useStoreActions((a) => a.iStore.error);
 
   const { id } = match.params;
   const isAddMode = !id;
@@ -51,28 +51,28 @@ function AddEdit({ history, match }) {
   function createUser(fields, setSubmitting) {
     create(fields)
       .then(() => {
-        alertService.success("User added successfully", {
+        alerSuccess("User added successfully", {
           keepAfterRouteChange: true,
         });
         history.push(".");
       })
       .catch((error) => {
         setSubmitting(false);
-        alertService.error(error);
+        alertError(error);
       });
   }
 
   function updateUser(id, fields, setSubmitting) {
     update(id, fields)
       .then(() => {
-        alertService.success("Update successful", {
+        alertSuccess("Update successful", {
           keepAfterRouteChange: true,
         });
         history.push("..");
       })
       .catch((error) => {
         setSubmitting(false);
-        alertService.error(error);
+        alertError(error);
       });
   }
 

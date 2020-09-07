@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
-import { useStoreState, useStoreActions } from "easy-peasy";
-
-import { alertService } from "@/_services";
+import { useStoreActions } from "easy-peasy";
 
 function VerifyEmail({ history }) {
   const verifyEmail = useStoreActions((a) => a.aStore.verifyEmail);
+  const alertSuccess = useStoreActions((a) => a.iStore.success);
+
   const EmailStatus = {
     Verifying: "Verifying",
     Failed: "Failed",
@@ -22,7 +22,8 @@ function VerifyEmail({ history }) {
 
     verifyEmail(token)
       .then(() => {
-        alertService.success("Verification successful, you can now login", {
+        alertSuccess({
+          message: "Verification successful, you can now login",
           keepAfterRouteChange: true,
         });
         history.push("login");

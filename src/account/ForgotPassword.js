@@ -2,12 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useStoreState, useStoreActions } from "easy-peasy";
-
-import { alertService } from "@/_services";
+import { useStoreActions } from "easy-peasy";
 
 function ForgotPassword() {
   const forgotPassword = useStoreActions((a) => a.aStore.forgotPassword);
+  const alertSuccess = useStoreActions((a) => a.iStore.success);
+  const alertError = useStoreActions((a) => a.iStore.error);
+  const clearAlerts = useStoreActions((a) => a.iStore.clear);
 
   const initialValues = {
     email: "",
@@ -18,14 +19,14 @@ function ForgotPassword() {
   });
 
   function onSubmit({ email }, { setSubmitting }) {
-    alertService.clear();
+    clearAlerts();
     forgotPassword(email)
       .then(() =>
-        alertService.success(
-          "Please check your email for password reset instructions"
-        )
+        alertSuccess({
+          message: "Please check your email for password reset instructions",
+        })
       )
-      .catch((error) => alertService.error(error))
+      .catch((error) => alertError({ message: error }))
       .finally(() => setSubmitting(false));
   }
 

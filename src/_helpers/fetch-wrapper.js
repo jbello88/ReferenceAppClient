@@ -48,12 +48,16 @@ function _delete(url) {
 function authHeader(url) {
   let user;
   const json = localStorage.getItem("account");
+  console.log(json);
   if (json) {
-    const user = JSON.parse(json);
+    user = JSON.parse(json);
+    console.log(user);
   }
+
   const isLoggedIn = user && user.jwtToken;
   const isApiUrl = url.startsWith(config.apiUrl);
   if (isLoggedIn && isApiUrl) {
+    console.log("Token added");
     return { Authorization: `Bearer ${user.jwtToken}` };
   } else {
     return {};

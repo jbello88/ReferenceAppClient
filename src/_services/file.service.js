@@ -1,4 +1,3 @@
-import { alertService } from "@/_services";
 const baseUrl = "http://localhost:4000/upload";
 
 export const fileService = {
@@ -15,11 +14,10 @@ export const fileService = {
       response = await response.json();
       console.log(response);
       const options = { autoClose: false };
-      alertService.success(
-        '&lt;img src="' + response + '" width="10%" &gt;',
-        options
-      );
-      return response;
+
+      const message = '&lt;img src="' + response + '" width="10%" &gt;';
+
+      return message;
     } catch (error) {
       console.log(error);
       return null;

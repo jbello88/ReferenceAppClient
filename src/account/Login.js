@@ -4,10 +4,13 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useStoreState, useStoreActions } from "easy-peasy";
 
-import { alertService } from "@/_services";
-
 function Login({ history, location }) {
   const login = useStoreActions((a) => a.aStore.login);
+  const refreshAction = useStoreActions((a) => a.aStore.refreshToken);
+
+  const alertError = useStoreActions((a) => a.iStore.error);
+  const clearAlerts = useStoreActions((a) => a.iStore.clear);
+
   const initialValues = {
     email: "",
     password: "",
@@ -19,16 +22,16 @@ function Login({ history, location }) {
   });
 
   function onSubmit({ email, password }, { setSubmitting }) {
-    alertService.clear();
+    clearAlerts();
     console.log(email);
-    login({ email, password })
+    login({ email, password, refreshAction })
       .then(() => {
         const { from } = location.state || { from: { pathname: "/" } };
         history.push(from);
       })
       .catch((error) => {
         setSubmitting(false);
-        alertService.error(error);
+        alertError({ message: error });
       });
   }
 

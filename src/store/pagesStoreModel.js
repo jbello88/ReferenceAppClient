@@ -1,5 +1,5 @@
 import { action, thunk } from "easy-peasy";
-import { pageService, alertService } from "@/_services";
+import { pageService } from "@/_services";
 
 const pagesStoreModel = {
   pages: [],
@@ -110,7 +110,7 @@ const pagesStoreModel = {
       actions.addPage(newPage);
     }
 
-    alertService.success("Page was saved successfully");
+    //alertService.success("Page was saved successfully");
   }),
 
   deletePage: thunk(async (actions, page, helpers) => {

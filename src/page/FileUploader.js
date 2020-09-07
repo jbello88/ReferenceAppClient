@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import {fileService} from "@/_services";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+import { fileService } from "@/_services";
+import { useStoreActions } from "easy-peasy";
 
 export const FileUploader = () => {
   const [file, setFile] = useState();
   const [filename, setFilename] = useState("Choose image to upload");
+  const alertSuccess = useStoreActions((a) => a.iStore.success);
 
   const onChange = (e) => {
     console.log("file-set");
@@ -19,7 +19,8 @@ export const FileUploader = () => {
     const formData = new FormData();
     formData.append("file", file);
     console.log(formData);
-    await fileService.uploadFile(formData);
+    const message = await fileService.uploadFile(formData);
+    alertSuccess({ message: message, options: { autoClose: false } });
   };
 
   return (

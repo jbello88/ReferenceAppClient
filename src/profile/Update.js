@@ -4,12 +4,13 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useStoreState, useStoreActions } from "easy-peasy";
 
-import { alertService } from "@/_services";
-
 function Update({ history }) {
   const user = useStoreState((s) => s.aStore.account);
   const update = useStoreActions((a) => a.aStore.updateAccount);
   const deleteAccount = useStoreActions((a) => a.aStore.deleteAccount);
+  const alertSuccess = useStoreActions((a) => a.iStore.success);
+  const alertError = useStoreActions((a) => a.iStore.error);
+
   const initialValues = {
     userName: user.userName,
     email: user.email,
@@ -32,14 +33,15 @@ function Update({ history }) {
     setStatus();
     update(user.id, fields)
       .then(() => {
-        alertService.success("Update successful", {
-          keepAfterRouteChange: true,
+        alertSuccess({
+          message: "Update successful",
+          options: { keepAfterRouteChange: true },
         });
         history.push(".");
       })
       .catch((error) => {
         setSubmitting(false);
-        alertService.error(error);
+        alertError({ message: error });
       });
   }
 
@@ -49,7 +51,7 @@ function Update({ history }) {
       setIsDeleting(true);
 
       deleteAccount(user.id).then(() =>
-        alertService.success("Account deleted successfully")
+        alertSuccess("Account deleted successfully")
       );
     }
   }

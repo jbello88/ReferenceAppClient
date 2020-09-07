@@ -1,5 +1,5 @@
 import { action, thunk } from "easy-peasy";
-import { accountService, alertService } from "@/_services";
+import { accountService } from "@/_services";
 
 const accountsStoreModels = {
   accounts: [],
@@ -18,6 +18,7 @@ const accountsStoreModels = {
   }),
 
   setAccount: action((state, account) => {
+    console.log("Account", account);
     localStorage.setItem("account", JSON.stringify(account));
     state.account = account;
     state.editAccount = account;
@@ -48,8 +49,10 @@ const accountsStoreModels = {
   }),
 
   clearAccount: action((state) => {
-    localStorage.setItem("account", null);
+    localStorage.setItem("account", JSON.stringify({}));
     state.account = null;
+    document.cookie =
+      "refreshToken" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
   }),
 
   removeAccount: action((state, account) => {
@@ -61,16 +64,16 @@ const accountsStoreModels = {
     state.pages = pages;
   }),
 
-  startRefreshTokenTimer: action((state, pages) => {
+  startRefreshTokenTimer: action((state, refreshToken) => {
     // parse json object from base64 encoded jwt token
     const jwtToken = JSON.parse(atob(state.account.jwtToken.split(".")[1]));
 
     // set a timeout to refresh the token a minute before it expires
     const expires = new Date(jwtToken.exp * 1000);
     const timeout = expires.getTime() - Date.now() - 60 * 1000;
-    console.log(this);
+
     state.refreshTokenTimeout = setTimeout(() => {
-      console.log("timeout expired");
+      refreshToken(refreshToken);
     }, timeout);
   }),
 
@@ -81,11 +84,11 @@ const accountsStoreModels = {
   // Thunks
 
   login: thunk(async (actions, payload) => {
-    const { email, password } = payload;
+    const { email, password, refreshAction } = payload;
     console.log(email);
     const acc = await accountService.login(email, password);
     actions.setAccount(acc);
-    actions.startRefreshTokenTimer();
+    actions.startRefreshTokenTimer(refreshAction);
   }),
 
   logout: thunk(async (actions) => {
@@ -94,10 +97,10 @@ const accountsStoreModels = {
     actions.clearAccount();
   }),
 
-  refreshToken: thunk(async (actions) => {
+  refreshToken: thunk(async (actions, refreshAction) => {
     const acc = await accountService.refreshToken();
     actions.setAccount(acc);
-    actions.startRefreshTokenTimer();
+    actions.startRefreshTokenTimer(refreshAction);
   }),
 
   register: thunk(async (actions, payload) => {
@@ -123,7 +126,7 @@ const accountsStoreModels = {
 
   getAllAccounts: thunk(async (actions) => {
     const accs = await accountService.getAll();
-    acctions.setAccounts(accs);
+    actions.setAccounts(accs);
   }),
 
   getAccountById: thunk(async (actions, id) => {

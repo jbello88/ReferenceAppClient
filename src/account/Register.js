@@ -2,11 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useStoreState, useStoreActions } from "easy-peasy";
-import { alertService } from "@/_services";
+import { useStoreActions } from "easy-peasy";
 
 function Register({ history }) {
   const register = useStoreActions((a) => a.aStore.register);
+  const alertSuccess = useStoreActions((a) => a.iStore.success);
+  const alertError = useStoreActions((a) => a.iStore.error);
+
   const initialValues = {
     title: "",
     firstName: "",
@@ -32,15 +34,16 @@ function Register({ history }) {
     setStatus();
     register(fields)
       .then(() => {
-        alertService.success(
-          "Registration successful, please check your email for verification instructions",
-          { keepAfterRouteChange: true }
-        );
+        alertSuccess({
+          message:
+            "Registration successful, please check your email for verification instructions",
+          keepAfterRouteChange: true,
+        });
         history.push("login");
       })
       .catch((error) => {
         setSubmitting(false);
-        alertService.error(error);
+        alertError({ message: error });
       });
   }
 
