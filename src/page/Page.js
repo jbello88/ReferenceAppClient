@@ -4,6 +4,8 @@ import { useStoreState, useStoreActions } from "easy-peasy";
 import Container from "react-bootstrap/Container";
 import PageDisplay from "./PageDisplay";
 import PageEdit from "./PageEdit";
+import Modal from "react-bootstrap/modal";
+import Button from "react-bootstrap/button";
 import { useHistory } from "react-router-dom";
 
 import { MdModeEdit, MdDelete } from "react-icons/md";
@@ -15,6 +17,7 @@ export default function Page() {
   const loadPage = useStoreActions((a) => a.pStore.loadPage);
   const deletePage = useStoreActions((a) => a.pStore.deletePage);
   const [modus, setModus] = useState("show");
+  const [showConfirmation, setShowConfirmation] = useState();
   const history = useHistory();
 
   useEffect(() => {
@@ -40,27 +43,52 @@ export default function Page() {
   };
 
   const handleDelete = () => {
+    if (showConfirmation) return;
+    setShowConfirmation(true);
+  };
+
+  const deleteConfirmed = () => {
     deletePage(page);
+    setShowConfirmation(false);
     history.push("/content");
   };
 
   return (
-    <Container className="w-auto mt-5 ">
-      {user?.role === "Admin" ? (
-        <div className="float-right">
-          {modus === "show" ? (
-            <button className="btn btn-light" onClick={handleDelete}>
-              <MdDelete />
-            </button>
-          ) : null}
+    <>
+      <Container className="w-auto mt-5 ">
+        {user?.role === "Admin" ? (
+          <div className="float-right">
+            {modus === "show" ? (
+              <button className="btn btn-light" onClick={handleDelete}>
+                <MdDelete />
+              </button>
+            ) : null}
 
-          <button className="btn btn-light" onClick={toogleEdit}>
-            <MdModeEdit />
-          </button>
-        </div>
-      ) : null}
-      {modus === "show" ? <PageDisplay /> : null}
-      {modus === "edit" ? <PageEdit page={page} /> : null}
-    </Container>
+            <button className="btn btn-light" onClick={toogleEdit}>
+              <MdModeEdit />
+            </button>
+          </div>
+        ) : null}
+        {modus === "show" ? <PageDisplay /> : null}
+        {modus === "edit" ? <PageEdit page={page} /> : null}
+      </Container>
+      <Modal show={showConfirmation} onHide={() => setShowConfirmation(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Do you really want to delete this page?</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowConfirmation(false)}
+          >
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={deleteConfirmed}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 }

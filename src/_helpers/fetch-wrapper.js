@@ -54,6 +54,9 @@ function authHeader(url) {
     console.log(user);
   }
 
+  //const user = window.account;
+  console.log("***************************", user);
+
   const isLoggedIn = user && user.jwtToken;
   const isApiUrl = url.startsWith(config.apiUrl);
   if (isLoggedIn && isApiUrl) {

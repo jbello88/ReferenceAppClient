@@ -10,7 +10,7 @@ const alertsStoreModel = {
     state.alerts.push(alert);
   }),
 
-  removeAlertInternal: action((state, alert) => {
+  removeAlert: action((state, alert) => {
     state.alerts = state.alerts.filter((x) => x.id !== alert.id);
   }),
 
@@ -25,7 +25,7 @@ const alertsStoreModel = {
     alert.autoClose = alert.autoClose === undefined ? true : alert.autoClose;
     actions.setAlertInternal(alert);
     if (alert.autoClose) {
-      setTimeout(() => actions.removeAlertInternal(alert), 3500);
+      setTimeout(() => actions.removeAlert(alert), 3500);
     }
   }),
 

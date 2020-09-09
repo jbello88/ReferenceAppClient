@@ -15,7 +15,7 @@ const defaultProps = {
 
 function Alert({ id, fade }) {
   const alerts = useStoreState((s) => s.iStore.alerts);
-  const logout = useStoreActions((a) => a.aStore.logout);
+  const removeAlert = useStoreActions((a) => a.iStore.removeAlert);
 
   function cssClasses(alert) {
     if (!alert) return;

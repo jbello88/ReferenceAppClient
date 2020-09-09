@@ -7,6 +7,7 @@ import Card from "react-bootstrap/Card";
 export default function Comment({ data }) {
   const history = useHistory();
   const page = useStoreState((s) => s.pStore.page);
+  const user = useStoreState((s) => s.aStore.account);
   const editComment = useStoreActions((a) => a.pStore.editComment);
   const deleteComment = useStoreActions((a) => a.pStore.deleteComment);
 
@@ -25,14 +26,16 @@ export default function Comment({ data }) {
       <Card.Body>
         <Card.Title>Comment by {data.userName}</Card.Title>
         <Card.Text>{data.content}</Card.Text>
-        <div className="float-right">
-          <button className="btn btn-light" onClick={handleEdit}>
-            <MdModeEdit />
-          </button>{" "}
-          <button className="btn btn-light" onClick={handleDelete}>
-            <MdDelete />
-          </button>{" "}
-        </div>
+        {user && (user.id == data.userId || user.role == "Admin") ? (
+          <div className="float-right">
+            <button className="btn btn-light" onClick={handleEdit}>
+              <MdModeEdit />
+            </button>{" "}
+            <button className="btn btn-light" onClick={handleDelete}>
+              <MdDelete />
+            </button>{" "}
+          </div>
+        ) : null}
       </Card.Body>
     </Card>
   );

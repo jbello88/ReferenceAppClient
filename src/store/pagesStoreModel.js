@@ -122,15 +122,17 @@ const pagesStoreModel = {
 
   saveComment: thunk(async (actions, comment, helpers) => {
     const localState = helpers.getState();
-
+    console.log(comment);
     if (comment._id) {
       // this is an update
+      console.log(localState.page._id);
       const updatedComment = await pageService.updateComment(
         localState.page._id,
         comment
       );
       actions.replaceComment(updatedComment);
     } else {
+      console.log("new Comment");
       const updatedComment = await pageService.addComment(
         localState.page._id,
         comment

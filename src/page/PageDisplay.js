@@ -22,21 +22,28 @@ export default function PageDisplay() {
     <>
       <h2>{page.title}</h2>
 
-      <ReactMarkdown source={page.content} escapeHtml={false} />
-      <hr />
+      <ReactMarkdown
+        source={page.content}
+        escapeHtml={false}
+        className="mb-4"
+      />
+      <div className="mt-5"></div>
+      <hr className="mt-3 mb-3" />
       <div>
         <Row>
           <Col>
-            <h4 className="mt-2">Comments</h4>
+            <h4 className="mt-5">Comments</h4>
           </Col>
-          (user ? <Col>
-            <button
-              className="float-right btn btn-light"
-              onClick={addCommentHandler}
-            >
-              <MdAdd />
-            </button>
-          </Col>: null)
+          {user ? (
+            <Col>
+              <button
+                className="float-right btn btn-light"
+                onClick={addCommentHandler}
+              >
+                <MdAdd />
+              </button>
+            </Col>
+          ) : null}
         </Row>
       </div>
 

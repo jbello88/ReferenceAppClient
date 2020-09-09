@@ -8,19 +8,18 @@ export const FileUploader = () => {
   const alertSuccess = useStoreActions((a) => a.iStore.success);
 
   const onChange = (e) => {
-    console.log("file-set");
     setFile(e.target.files[0]);
     setFilename(e.target.files[0].name);
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("upload started");
     const formData = new FormData();
     formData.append("file", file);
     console.log(formData);
     const message = await fileService.uploadFile(formData);
-    alertSuccess({ message: message, options: { autoClose: false } });
+    alertSuccess({ message: message, autoClose: false });
+    setFilename("");
   };
 
   return (

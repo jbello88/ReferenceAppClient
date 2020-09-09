@@ -10,6 +10,7 @@ const accountsStoreModels = {
   addAccount: action((state, account) => {
     state.account = account;
     localStorage.setItem("account", JSON.stringify(account));
+    window.account = account;
   }),
 
   addNewAccount: action((state, account) => {
@@ -51,8 +52,7 @@ const accountsStoreModels = {
   clearAccount: action((state) => {
     localStorage.setItem("account", JSON.stringify({}));
     state.account = null;
-    document.cookie =
-      "refreshToken" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    window.account = null;
   }),
 
   removeAccount: action((state, account) => {
@@ -64,7 +64,7 @@ const accountsStoreModels = {
     state.pages = pages;
   }),
 
-  startRefreshTokenTimer: action((state, refreshToken) => {
+  startRefreshTokenTimer: action((state, refreshAction) => {
     // parse json object from base64 encoded jwt token
     const jwtToken = JSON.parse(atob(state.account.jwtToken.split(".")[1]));
 
@@ -73,7 +73,7 @@ const accountsStoreModels = {
     const timeout = expires.getTime() - Date.now() - 60 * 1000;
 
     state.refreshTokenTimeout = setTimeout(() => {
-      refreshToken(refreshToken);
+      refreshAction(refreshAction);
     }, timeout);
   }),
 

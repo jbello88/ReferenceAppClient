@@ -9,14 +9,21 @@ function Nav() {
 
   return (
     <div>
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
+      <nav className="navbar navbar-expand navbar-dark bg-info larger">
         <div className="navbar-nav mr-auto">
           <NavLink exact to="/" className="nav-item nav-link">
             Home
           </NavLink>
           <NavLink exact to="/content" className="nav-item nav-link">
-            Content
+            Documentation
           </NavLink>
+          <a
+            className="nav-item nav-link"
+            href="http://localhost:4000/api-docs"
+            target="_blank"
+          >
+            API-Documentation
+          </a>
           <NavLink to="/profile" className="nav-item nav-link">
             Profile
           </NavLink>

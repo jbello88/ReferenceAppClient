@@ -31,6 +31,7 @@ export default function Pages() {
         <MdAdd />
       </button>
       <Container className="w-auto mt-5 ">
+        <h2 className="mb-3 ml-5">Documentation</h2>
         {pages.map((p) => (
           <Row key={p._id}>
             <Col>
