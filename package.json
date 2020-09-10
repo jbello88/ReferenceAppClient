@@ -27,7 +27,6 @@
     "react-markdown-editor-lite": "^1.2.2",
     "react-mde": "^10.2.1",
     "react-router-dom": "^5.0.0",
-    "rxjs": "^6.3.3",
     "showdown": "^1.9.1",
     "yup": "^0.28.1"
   },
