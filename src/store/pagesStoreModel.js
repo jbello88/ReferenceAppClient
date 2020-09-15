@@ -1,5 +1,6 @@
 import { action, thunk } from "easy-peasy";
-import { pageService } from "@/_services";
+import { pageService } from "../_services";
+import { commentService } from "../_services";
 
 const pagesStoreModel = {
   pages: [],
@@ -126,14 +127,13 @@ const pagesStoreModel = {
     if (comment._id) {
       // this is an update
       console.log(localState.page._id);
-      const updatedComment = await pageService.updateComment(
+      const updatedComment = await commentService.update(
         localState.page._id,
         comment
       );
       actions.replaceComment(updatedComment);
     } else {
-      console.log("new Comment");
-      const updatedComment = await pageService.addComment(
+      const updatedComment = await commentService.create(
         localState.page._id,
         comment
       );
@@ -145,7 +145,7 @@ const pagesStoreModel = {
   deleteComment: thunk(async (actions, comment, helpers) => {
     const localState = helpers.getState();
     if (comment._id) {
-      await pageService.deleteComment(localState.page._id, comment);
+      await commentService.delete(localState.page._id, comment);
       actions.removeComment(comment);
     }
   }),

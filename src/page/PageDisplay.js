@@ -11,6 +11,7 @@ export default function PageDisplay() {
   const page = useStoreState((state) => state.pStore.page);
   const user = useStoreState((s) => s.aStore.account);
   const createNewComment = useStoreActions((a) => a.pStore.createComment);
+
   const history = useHistory();
 
   const addCommentHandler = () => {

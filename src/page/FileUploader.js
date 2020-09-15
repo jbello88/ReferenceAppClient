@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { fileService } from "@/_services";
+import { fileService } from "../_services";
 import { useStoreActions } from "easy-peasy";
 
 export const FileUploader = () => {

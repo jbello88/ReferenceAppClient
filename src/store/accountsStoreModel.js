@@ -1,5 +1,5 @@
 import { action, thunk } from "easy-peasy";
-import { accountService } from "@/_services";
+import { accountService } from "../_services";
 
 const accountsStoreModels = {
   accounts: [],
@@ -64,7 +64,7 @@ const accountsStoreModels = {
     state.pages = pages;
   }),
 
-  startRefreshTokenTimer: action((state, refreshAction) => {
+  startRefreshTokenTimer: action((state, refreshToken) => {
     // parse json object from base64 encoded jwt token
     const jwtToken = JSON.parse(atob(state.account.jwtToken.split(".")[1]));
 
@@ -73,7 +73,7 @@ const accountsStoreModels = {
     const timeout = expires.getTime() - Date.now() - 60 * 1000;
 
     state.refreshTokenTimeout = setTimeout(() => {
-      refreshAction(refreshAction);
+      refreshToken(refreshToken);
     }, timeout);
   }),
 

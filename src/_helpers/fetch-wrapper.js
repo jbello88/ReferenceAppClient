@@ -1,5 +1,3 @@
-import config from "config";
-
 export const fetchWrapper = {
   get,
   post,
@@ -16,6 +14,7 @@ function get(url) {
 }
 
 function post(url, body) {
+  console.log("PPPPPPPPPPPPPP", url);
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeader(url) },
@@ -58,7 +57,7 @@ function authHeader(url) {
   console.log("***************************", user);
 
   const isLoggedIn = user && user.jwtToken;
-  const isApiUrl = url.startsWith(config.apiUrl);
+  const isApiUrl = url.startsWith(process.env.API_URL);
   if (isLoggedIn && isApiUrl) {
     console.log("Token added");
     return { Authorization: `Bearer ${user.jwtToken}` };

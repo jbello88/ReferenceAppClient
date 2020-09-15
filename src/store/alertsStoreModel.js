@@ -1,5 +1,5 @@
 import { action, thunk } from "easy-peasy";
-import { AlertType } from "@/_helpers";
+import { AlertType } from "../_helpers";
 
 const alertsStoreModel = {
   alerts: [],

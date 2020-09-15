@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useStoreState, useStoreActions } from "easy-peasy";
-import { AlertType } from "@/_helpers";
+import { AlertType } from "../_helpers";
 
 const propTypes = {
   id: PropTypes.string,

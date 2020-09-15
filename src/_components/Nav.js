@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, Route } from "react-router-dom";
 import { useStoreState, useStoreActions } from "easy-peasy";
-import { history, Role } from "@/_helpers";
+import { history, Role } from "../_helpers";
 
 function Nav() {
   const user = useStoreState((s) => s.aStore.account);
