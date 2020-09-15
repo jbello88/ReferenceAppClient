@@ -25,10 +25,10 @@ function ResetPassword({ history }) {
   const [tokenStatus, setTokenStatus] = useState(TokenStatus.Validating);
 
   useEffect(() => {
-    const { token } = queryString.parse(location.search);
+    const { token } = queryString.parse(window.location.search);
 
     // remove token from url to prevent http referer leakage
-    history.replace(location.pathname);
+    history.replace(window.location.pathname);
 
     validateResetToken(token)
       .then(() => {
@@ -149,6 +149,8 @@ function ResetPassword({ history }) {
         );
       case TokenStatus.Validating:
         return <div>Validating token...</div>;
+      default:
+        return <></>;
     }
   }
 

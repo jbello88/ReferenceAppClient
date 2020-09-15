@@ -3,16 +3,11 @@ import { Router } from "react-router-dom";
 import { render } from "react-dom";
 
 import { history } from "./_helpers";
-import { accountService } from "./_services";
 import { StoreProvider } from "easy-peasy";
 import store from "./store";
 import { App } from "./app";
 
-import "./styles.less";
-
-// setup fake backend
-//import { configureFakeBackend } from "./_helpers";
-//configureFakeBackend();
+import "./styles.css";
 
 render(
   <React.StrictMode>

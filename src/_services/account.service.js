@@ -1,6 +1,6 @@
 import { fetchWrapper, history } from "../_helpers";
 
-const baseUrl = `${process.env.API_URL}/accounts`;
+const baseUrl = `${process.env.REACT_APP_API_URL}/accounts`;
 
 export const accountService = {
   login,
@@ -77,9 +77,9 @@ function update(id, params) {
 function _delete(id) {
   return fetchWrapper.delete(`${baseUrl}/${id}`).then((x) => {
     // auto logout if the logged in user deleted their own record
-    if (id === userSubject.value.id) {
+    /*     if (id === .value.id) {
       logout();
-    }
+    } */
     return x;
   });
 }

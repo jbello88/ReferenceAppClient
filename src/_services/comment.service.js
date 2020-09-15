@@ -1,6 +1,6 @@
 import { fetchWrapper } from "../_helpers";
 
-const baseUrlComment = `${process.env.API_URL}/comments`;
+const baseUrlComment = `${process.env.REACT_APP_API_URL}/comments`;
 
 const update = async (pageId, comment) => {
   let updatedComment = await fetchWrapper.put(

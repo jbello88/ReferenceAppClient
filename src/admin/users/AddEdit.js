@@ -15,12 +15,16 @@ function AddEdit({ history, match }) {
   const { id } = match.params;
   const isAddMode = !id;
 
+  useEffect(() => {
+    if (!isAddMode) {
+      getById(id);
+    }
+  }, []);
+
   const initialValues = {
-    title: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    role: "",
+    userName: user ? user.userName : "",
+    email: user ? user.email : "",
+    role: user ? user.role : "",
     password: "",
     confirmPassword: "",
   };
@@ -51,7 +55,7 @@ function AddEdit({ history, match }) {
   function createUser(fields, setSubmitting) {
     create(fields)
       .then(() => {
-        alerSuccess("User added successfully", {
+        alertSuccess("User added successfully", {
           keepAfterRouteChange: true,
         });
         history.push(".");
@@ -83,19 +87,6 @@ function AddEdit({ history, match }) {
       onSubmit={onSubmit}
     >
       {({ errors, touched, isSubmitting, setFieldValue }) => {
-        useEffect(() => {
-          if (!isAddMode) {
-            // get user and set form fields
-            getById(id);
-            //.then((user) => {
-            //  const fields = ["userName", "email", "role"];
-            //  fields.forEach((field) =>
-            //    setFieldValue(field, user[field], false)
-            //  );
-            //});
-          }
-        }, []);
-
         return (
           <Form>
             <h1>{isAddMode ? "Add User" : "Edit User"}</h1>

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { useStoreState, useStoreActions } from "easy-peasy";
+import React, { useRef } from "react";
+import { useStoreActions } from "easy-peasy";
 import MarkdownEditor from "./MarkdownEditor";
 import { useForm } from "react-hook-form";
 import { MdSave } from "react-icons/md";
@@ -20,6 +20,7 @@ export default function PageEdit({ page }) {
   //     <input type="submit"  className="btn btn-primary" />
 
   const { register, handleSubmit } = useForm({ defaultValues: defaultValues });
+  const eduRef = useRef();
 
   if (!page) {
     return <div>loading</div>;
@@ -28,8 +29,6 @@ export default function PageEdit({ page }) {
   defaultValues.title = page.title;
   defaultValues.subtitle = page.subtitle;
   defaultValues.slug = page.slug;
-
-  const eduRef = useRef();
 
   const onSubmit = (data) => {
     const para = {

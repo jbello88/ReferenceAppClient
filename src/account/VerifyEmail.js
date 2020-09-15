@@ -15,10 +15,10 @@ function VerifyEmail({ history }) {
   const [emailStatus, setEmailStatus] = useState(EmailStatus.Verifying);
 
   useEffect(() => {
-    const { token } = queryString.parse(location.search);
+    const { token } = queryString.parse(window.location.search);
 
     // remove token from url to prevent http referer leakage
-    history.replace(location.pathname);
+    history.replace(window.location.pathname);
 
     verifyEmail(token)
       .then(() => {
@@ -44,6 +44,8 @@ function VerifyEmail({ history }) {
             <Link to="forgot-password">forgot password</Link> page.
           </div>
         );
+      default:
+        return <></>;
     }
   }
 

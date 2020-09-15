@@ -31,17 +31,17 @@ const accountsStoreModels = {
 
   replaceAccount: action((state, account) => {
     state.accounts = state.accounts.map((a) =>
-      a.email === a.email ? account : a
+      a.email === account.email ? account : a
     );
     if (state.account.email === account.email) {
-      actions.setAccount(account);
+      state.actions.setAccount(account);
     }
   }),
 
   removeAccount: action((state, id) => {
-    state.accounts = state.accounts.filter((a) => a.id !== id);
+    const acc = state.accounts.filter((a) => a.id !== id);
     if (state.account.id === id) {
-      actions.setAccount(account);
+      state.actions.setAccount(acc);
     }
   }),
 
@@ -53,10 +53,6 @@ const accountsStoreModels = {
     localStorage.setItem("account", JSON.stringify({}));
     state.account = null;
     window.account = null;
-  }),
-
-  removeAccount: action((state, account) => {
-    state.account = null;
   }),
 
   // Actions
@@ -131,24 +127,23 @@ const accountsStoreModels = {
 
   getAccountById: thunk(async (actions, id) => {
     const acc = await accountService.getById(id);
-    acctions.setEditAccount(acc);
+    actions.setEditAccount(acc);
   }),
 
   createAccount: thunk(async (actions, newAccount) => {
     const acc = await accountService.create(newAccount);
-    acctions.addNewAccount(acc);
+    actions.addNewAccount(acc);
   }),
 
-  updateAccount: thunk(async (actions, payload, helpers) => {
+  updateAccount: thunk(async (actions, payload) => {
     const { id, params } = payload;
-    const localState = helpers.getState();
     const acc = await accountService.update(id, params);
-    acctions.replaceAccount(acc);
+    actions.replaceAccount(acc);
   }),
 
   deleteAccount: thunk(async (actions, id) => {
     await accountService.delete(id);
-    acctions.removeAccount(id);
+    actions.removeAccount(id);
   }),
 };
 

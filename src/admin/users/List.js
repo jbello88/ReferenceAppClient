@@ -13,14 +13,6 @@ function List({ match }) {
   }, []);
 
   function deleteUser(id) {
-    setUsers(
-      users.map((x) => {
-        if (x.id === id) {
-          x.isDeleting = true;
-        }
-        return x;
-      })
-    );
     deleteAccount(id);
   }
 

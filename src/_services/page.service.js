@@ -1,6 +1,6 @@
 import { fetchWrapper } from "../_helpers";
 
-const baseUrl = `${process.env.API_URL}/pages`;
+const baseUrl = `${process.env.REACT_APP_API_URL}/pages`;
 
 const getAll = async () => {
   let pages = await fetch(baseUrl);

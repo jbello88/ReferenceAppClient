@@ -47,7 +47,7 @@ function Update({ history }) {
 
   const [isDeleting, setIsDeleting] = useState(false);
   function onDelete() {
-    if (confirm("Are you sure?")) {
+    if (window.confirm("Are you sure?")) {
       setIsDeleting(true);
 
       deleteAccount(user.id).then(() =>

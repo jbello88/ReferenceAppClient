@@ -57,7 +57,7 @@ function authHeader(url) {
   console.log("***************************", user);
 
   const isLoggedIn = user && user.jwtToken;
-  const isApiUrl = url.startsWith(process.env.API_URL);
+  const isApiUrl = url.startsWith(process.env.REACT_APP_API_URL);
   if (isLoggedIn && isApiUrl) {
     console.log("Token added");
     return { Authorization: `Bearer ${user.jwtToken}` };
