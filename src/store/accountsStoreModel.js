@@ -6,10 +6,14 @@ const accountsStoreModels = {
   account: null,
   editAccount: null,
   refreshTokenTimeout: null,
+  refreshToken: null,
+
+  // Actions
 
   addAccount: action((state, account) => {
     state.account = account;
-    localStorage.setItem("account", JSON.stringify(account));
+    state.refreshToken = account?.jwtToken;
+    //localStorage.setItem("account", JSON.stringify(account));
     window.account = account;
   }),
 
@@ -20,9 +24,11 @@ const accountsStoreModels = {
 
   setAccount: action((state, account) => {
     console.log("Account", account);
-    localStorage.setItem("account", JSON.stringify(account));
+    //localStorage.setItem("account", JSON.stringify(account));
     state.account = account;
+    state.refreshToken = account?.jwtToken;
     state.editAccount = account;
+    window.account = account;
   }),
 
   setEditAccount: action((state, account) => {
@@ -31,17 +37,20 @@ const accountsStoreModels = {
 
   replaceAccount: action((state, account) => {
     state.accounts = state.accounts.map((a) =>
-      a.email === account.email ? account : a
+      a.id === account.id || !a.id ? account : a
     );
-    if (state.account.email === account.email) {
-      state.actions.setAccount(account);
+    if (state.account.id === account.id || !state.account.id) {
+      state.account = account;
+      state.refreshToken = account?.jwtToken;
+      state.editAccount = account;
     }
   }),
 
   removeAccount: action((state, id) => {
     const acc = state.accounts.filter((a) => a.id !== id);
     if (state.account.id === id) {
-      state.actions.setAccount(acc);
+      state.account = acc;
+      state.editAccount = acc;
     }
   }),
 
@@ -50,53 +59,29 @@ const accountsStoreModels = {
   }),
 
   clearAccount: action((state) => {
-    localStorage.setItem("account", JSON.stringify({}));
+    //localStorage.setItem("account", JSON.stringify({}));
     state.account = null;
+    state.refreshToken = null;
     window.account = null;
-  }),
-
-  // Actions
-  addLoadedPages: action((state, pages) => {
-    state.pages = pages;
-  }),
-
-  startRefreshTokenTimer: action((state, refreshToken) => {
-    // parse json object from base64 encoded jwt token
-    const jwtToken = JSON.parse(atob(state.account.jwtToken.split(".")[1]));
-
-    // set a timeout to refresh the token a minute before it expires
-    const expires = new Date(jwtToken.exp * 1000);
-    const timeout = expires.getTime() - Date.now() - 60 * 1000;
-
-    state.refreshTokenTimeout = setTimeout(() => {
-      refreshToken(refreshToken);
-    }, timeout);
-  }),
-
-  stopRefreshTokenTimer: action((state, pages) => {
-    clearTimeout(state.refreshTokenTimeout);
   }),
 
   // Thunks
 
   login: thunk(async (actions, payload) => {
-    const { email, password, refreshAction } = payload;
+    const { email, password } = payload;
     console.log(email);
     const acc = await accountService.login(email, password);
     actions.setAccount(acc);
-    actions.startRefreshTokenTimer(refreshAction);
   }),
 
   logout: thunk(async (actions) => {
     await accountService.logout();
-    actions.stopRefreshTokenTimer();
     actions.clearAccount();
   }),
 
-  refreshToken: thunk(async (actions, refreshAction) => {
+  refreshTheToken: thunk(async (actions, refreshAction) => {
     const acc = await accountService.refreshToken();
     actions.setAccount(acc);
-    actions.startRefreshTokenTimer(refreshAction);
   }),
 
   register: thunk(async (actions, payload) => {
@@ -131,7 +116,9 @@ const accountsStoreModels = {
   }),
 
   createAccount: thunk(async (actions, newAccount) => {
+    console.log(newAccount);
     const acc = await accountService.create(newAccount);
+    console.log(acc);
     actions.addNewAccount(acc);
   }),
 

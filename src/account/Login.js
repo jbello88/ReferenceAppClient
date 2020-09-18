@@ -2,12 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useStoreState, useStoreActions } from "easy-peasy";
+import { useStoreActions } from "easy-peasy";
 
 function Login({ history, location }) {
   const login = useStoreActions((a) => a.aStore.login);
-  const refreshAction = useStoreActions((a) => a.aStore.refreshToken);
-
   const alertError = useStoreActions((a) => a.iStore.error);
   const clearAlerts = useStoreActions((a) => a.iStore.clear);
 
@@ -24,7 +22,7 @@ function Login({ history, location }) {
   function onSubmit({ email, password }, { setSubmitting }) {
     clearAlerts();
     console.log(email);
-    login({ email, password, refreshAction })
+    login({ email, password })
       .then(() => {
         const { from } = location.state || { from: { pathname: "/" } };
         history.push(from);

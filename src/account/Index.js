@@ -15,8 +15,9 @@ function Account({ history, match }) {
   useEffect(() => {
     // redirect to home if already logged in
     if (account) {
-      //  history.push('/');
+      history.push("/");
     }
+    // eslint-disable-next-line
   }, []);
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import { AlertType } from "../_helpers";
@@ -45,9 +45,9 @@ function Alert({ id, fade }) {
       <div className="m-3">
         {alerts.map((alert, index) => (
           <div key={index} className={cssClasses(alert)}>
-            <a className="close" onClick={() => removeAlert(alert)}>
+            <button className="close" onClick={() => removeAlert(alert)}>
               &times;
-            </a>
+            </button>
             <span dangerouslySetInnerHTML={{ __html: alert.message }}></span>
           </div>
         ))}

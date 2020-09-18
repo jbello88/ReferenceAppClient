@@ -31,7 +31,9 @@ function Update({ history }) {
 
   function onSubmit(fields, { setStatus, setSubmitting }) {
     setStatus();
-    update(user.id, fields)
+    console.log(user.id);
+    console.log(fields);
+    update({ id: user.id, params: fields })
       .then(() => {
         alertSuccess({
           message: "Update successful",

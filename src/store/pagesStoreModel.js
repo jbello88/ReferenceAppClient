@@ -56,7 +56,7 @@ const pagesStoreModel = {
 
   replaceComment: action((state, comment) => {
     state.page.comments = state.page.comments.map((c) =>
-      c._id == comment._id ? comment : c
+      c._id === comment._id ? comment : c
     );
   }),
 
@@ -94,7 +94,6 @@ const pagesStoreModel = {
 
   updatePageContent: thunk(async (actions, payload, helpers) => {
     const { _id, slug, title, subtitle, content } = payload;
-    const localState = helpers.getState();
     const toUpdate = {
       slug,
       title,
@@ -110,8 +109,6 @@ const pagesStoreModel = {
       const newPage = await pageService.create(toUpdate);
       actions.addPage(newPage);
     }
-
-    //alertService.success("Page was saved successfully");
   }),
 
   deletePage: thunk(async (actions, page, helpers) => {

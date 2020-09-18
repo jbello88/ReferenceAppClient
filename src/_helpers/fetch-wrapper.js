@@ -14,7 +14,6 @@ function get(url) {
 }
 
 function post(url, body) {
-  console.log("PPPPPPPPPPPPPP", url);
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeader(url) },
@@ -45,21 +44,21 @@ function _delete(url) {
 // helper functions
 
 function authHeader(url) {
-  let user;
-  const json = localStorage.getItem("account");
+  /* let user;
+   const json = localStorage.getItem("account");
   console.log(json);
   if (json) {
     user = JSON.parse(json);
     console.log(user);
-  }
+  } */
 
-  //const user = window.account;
-  console.log("***************************", user);
+  const user = window.account;
 
   const isLoggedIn = user && user.jwtToken;
   const isApiUrl = url.startsWith(process.env.REACT_APP_API_URL);
   if (isLoggedIn && isApiUrl) {
     console.log("Token added");
+    console.log(window.account);
     return { Authorization: `Bearer ${user.jwtToken}` };
   } else {
     return {};
@@ -71,11 +70,6 @@ function handleResponse(response) {
     const data = text && JSON.parse(text);
 
     if (!response.ok) {
-      /*       if ([401, 403].includes(response.status) && user) {
-        // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-        accountxxxService.logout();
-      } */
-
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
     }

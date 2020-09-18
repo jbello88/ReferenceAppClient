@@ -1,19 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { useStoreState, useStoreActions } from "easy-peasy";
 
 function List({ match }) {
   const users = useStoreState((s) => s.aStore.accounts);
   const getAllAccounts = useStoreActions((a) => a.aStore.getAllAccounts);
+  const setEditAccount = useStoreActions((a) => a.aStore.setEditAccount);
   const deleteAccount = useStoreActions((a) => a.aStore.deleteAccount);
   const { path } = match;
 
+  const history = useHistory();
+
   useEffect(() => {
     getAllAccounts();
+    // eslint-disable-next-line
   }, []);
 
   function deleteUser(id) {
     deleteAccount(id);
+  }
+
+  function editUser(user) {
+    setEditAccount(user);
+    history.push(`${path}/edit/${user.id}`);
   }
 
   return (
@@ -40,12 +49,13 @@ function List({ match }) {
                 <td>{user.email}</td>
                 <td>{user.role}</td>
                 <td style={{ whiteSpace: "nowrap" }}>
-                  <Link
-                    to={`${path}/edit/${user.id}`}
+                  <button
+                    onClick={() => editUser(user)}
+                    style={{ width: "60px" }}
                     className="btn btn-sm btn-primary mr-1"
                   >
                     Edit
-                  </Link>
+                  </button>
                   <button
                     onClick={() => deleteUser(user.id)}
                     className="btn btn-sm btn-danger"

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useStoreState, useStoreActions } from "easy-peasy";
+import { useStoreState } from "easy-peasy";
 
 function Details({ match }) {
   const user = useStoreState((s) => s.aStore.account);

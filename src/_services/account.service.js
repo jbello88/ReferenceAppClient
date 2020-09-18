@@ -70,6 +70,7 @@ function create(params) {
 }
 
 function update(id, params) {
+  console.log(params);
   return fetchWrapper.put(`${baseUrl}/${id}`, params);
 }
 

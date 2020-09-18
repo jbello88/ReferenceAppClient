@@ -12,22 +12,33 @@ function AddEdit({ history, match }) {
   const alertSuccess = useStoreActions((a) => a.iStore.success);
   const alertError = useStoreActions((a) => a.iStore.error);
 
-  const { id } = match.params;
+  const id = match.params.id;
   const isAddMode = !id;
 
   useEffect(() => {
     if (!isAddMode) {
       getById(id);
     }
+    // eslint-disable-next-line
   }, []);
 
-  const initialValues = {
-    userName: user ? user.userName : "",
-    email: user ? user.email : "",
-    role: user ? user.role : "",
+  const emptyValues = {
+    userName: "",
+    email: "",
+    role: "",
     password: "",
     confirmPassword: "",
   };
+
+  const userValues = {
+    userName: user?.userName,
+    email: user?.email,
+    role: user?.role,
+    password: "",
+    confirmPassword: "",
+  };
+
+  const initialValues = isAddMode ? emptyValues : userValues;
 
   const validationSchema = Yup.object().shape({
     userName: Yup.string().required("Username is required"),
@@ -55,28 +66,30 @@ function AddEdit({ history, match }) {
   function createUser(fields, setSubmitting) {
     create(fields)
       .then(() => {
-        alertSuccess("User added successfully", {
+        alertSuccess({
+          message: "User added successfully",
           keepAfterRouteChange: true,
         });
         history.push(".");
       })
       .catch((error) => {
         setSubmitting(false);
-        alertError(error);
+        alertError({ message: error });
       });
   }
 
   function updateUser(id, fields, setSubmitting) {
-    update(id, fields)
+    update({ id: id, params: fields })
       .then(() => {
-        alertSuccess("Update successful", {
+        alertSuccess({
+          message: "Update successful",
           keepAfterRouteChange: true,
         });
         history.push("..");
       })
       .catch((error) => {
         setSubmitting(false);
-        alertError(error);
+        alertError({ message: error });
       });
   }
 
@@ -92,7 +105,7 @@ function AddEdit({ history, match }) {
             <h1>{isAddMode ? "Add User" : "Edit User"}</h1>
             <div className="form-row">
               <div className="form-group col">
-                <label>Last Name</label>
+                <label>User Name</label>
                 <Field
                   name="userName"
                   type="text"
@@ -102,7 +115,7 @@ function AddEdit({ history, match }) {
                   }
                 />
                 <ErrorMessage
-                  name="lastName"
+                  name="userName"
                   component="div"
                   className="invalid-feedback"
                 />

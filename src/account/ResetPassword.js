@@ -38,6 +38,7 @@ function ResetPassword({ history }) {
       .catch(() => {
         setTokenStatus(TokenStatus.Invalid);
       });
+    // eslint-disable-next-line
   }, []);
 
   function getForm() {

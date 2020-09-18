@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import ReactMarkdown from "react-markdown";
 import { useHistory } from "react-router-dom";

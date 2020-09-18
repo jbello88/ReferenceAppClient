@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { useStoreState, useStoreActions } from "easy-peasy";
+import { useStoreState } from "easy-peasy";
 
 function PrivateRoute({ component: Component, roles, ...rest }) {
   const account = useStoreState((s) => s.aStore.account);

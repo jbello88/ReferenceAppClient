@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Route, Switch, Redirect, useLocation } from "react-router-dom";
-import { useStoreActions } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { Role } from "../_helpers";
 import { Nav, PrivateRoute, Alert } from "../_components";
 import { Home } from "../home";
@@ -13,23 +13,29 @@ import CommentEdit from "../page/CommentEdit";
 
 function App() {
   const { pathname } = useLocation();
-  const loadPages = useStoreActions((actions) => actions.pStore.loadPages);
-  const setAccount = useStoreActions((actions) => actions.aStore.setAccount);
-  const refreshToken = useStoreActions(
-    (actions) => actions.aStore.refreshToken
-  );
+  const loadPages = useStoreActions((a) => a.pStore.loadPages);
+  const refreshToken = useStoreState((s) => s.aStore.refreshToken);
+  const refreshTheToken = useStoreActions((a) => a.aStore.refreshTheToken);
 
-  /*   useEffect(() => {
-    const subscription = accountXXXXService.user.subscribe((x) => {
-      setUser(x);
-      addAccount(x);
-    });
-    return subscription.unsubscribe;
-  }, []);
- */
   useEffect(() => {
-    refreshToken();
+    let refreshTokenTimeout;
+    if (refreshToken) {
+      const jwtToken = JSON.parse(atob(refreshToken.split(".")[1]));
+
+      const expires = new Date(jwtToken.exp * 1000);
+      const timeout = expires.getTime() - Date.now() - 60 * 1000;
+
+      refreshTokenTimeout = setTimeout(() => {
+        refreshTheToken();
+      }, timeout);
+    }
+    return () => clearTimeout(refreshTokenTimeout);
+  }, [refreshToken, refreshTheToken]);
+
+  useEffect(() => {
+    refreshTheToken();
     loadPages();
+    // eslint-disable-next-line
   }, []);
 
   return (

@@ -26,7 +26,7 @@ export default function Comment({ data }) {
       <Card.Body>
         <Card.Title>Comment by {data.userName}</Card.Title>
         <Card.Text>{data.content}</Card.Text>
-        {user && (user.id == data.userId || user.role == "Admin") ? (
+        {user && (user.id === data.userId || user.role === "Admin") ? (
           <div className="float-right">
             <button className="btn btn-light" onClick={handleEdit}>
               <MdModeEdit />
