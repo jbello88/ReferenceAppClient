@@ -17,14 +17,6 @@ export default function Pages() {
     history.push("/topic/newPage");
   };
 
-  if (pages?.length === 0) {
-    return (
-      <div>
-        <p>loading</p>
-      </div>
-    );
-  }
-
   return (
     <>
       <button className="float-right btn btn-light" onClick={addPageHandler}>

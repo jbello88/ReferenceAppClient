@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:4000/uploads";
+const baseUrl = "http://localhost:4000/files/upload";
 
 export const fileService = {
   uploadFile: async (formData) => {

@@ -8,7 +8,9 @@ export const FileUploader = () => {
   const alertSuccess = useStoreActions((a) => a.iStore.success);
 
   const onChange = (e) => {
+    console.log(e.target.files[0]);
     setFile(e.target.files[0]);
+
     setFilename(e.target.files[0].name);
   };
 
