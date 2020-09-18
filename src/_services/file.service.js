@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:4000/files/upload";
+const baseUrl = `${process.env.REACT_APP_API_URL}/files/upload`;
 
 export const fileService = {
   uploadFile: async (formData) => {
@@ -13,10 +13,7 @@ export const fileService = {
 
       response = await response.json();
       console.log(response);
-      const options = { autoClose: false };
-
       const message = '&lt;img src="' + response + '" width="10%" &gt;';
-
       return message;
     } catch (error) {
       console.log(error);
@@ -24,5 +21,3 @@ export const fileService = {
     }
   },
 };
-
-//  headers: { "Content-Type": "multipart/form-data" },
