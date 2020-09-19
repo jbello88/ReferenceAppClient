@@ -38,18 +38,18 @@ function Nav() {
             <span className="navbar-text mr-4">User: {user.userName}</span>
           )}
           {user && (
-            <button onClick={() => logout()} className="nav-item nav-link ">
+            <a onClick={() => logout()} className="nav-item nav-link ">
               Logout
-            </button>
+            </a>
           )}
           {!user && (
-            <button
+            <a
               className="nav-item nav-link"
               onClick={() => history.push("/account/login")}
               variant="outline-success"
             >
               Login
-            </button>
+            </a>
           )}
         </div>
       </nav>
