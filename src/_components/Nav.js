@@ -6,6 +6,7 @@ import { history, Role } from "../_helpers";
 function Nav() {
   const user = useStoreState((s) => s.aStore.account);
   const logout = useStoreActions((a) => a.aStore.logout);
+  const apiDocPath = `${process.env.REACT_APP_API_URL}/api/api-docs`;
 
   return (
     <div>
@@ -17,11 +18,7 @@ function Nav() {
           <NavLink exact to="/content" className="nav-item nav-link">
             Documentation
           </NavLink>
-          <a
-            className="nav-item nav-link"
-            href="http://localhost:4000/api-docs"
-            target="_blank"
-          >
+          <a className="nav-item nav-link" href={apiDocPath} target="_blank">
             API-Documentation
           </a>
           <NavLink to="/profile" className="nav-item nav-link">
