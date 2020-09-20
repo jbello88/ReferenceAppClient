@@ -13,7 +13,7 @@ const accountsStoreModels = {
   addAccount: action((state, account) => {
     state.account = account;
     state.refreshToken = account?.jwtToken;
-    //localStorage.setItem("account", JSON.stringify(account));
+    localStorage.setItem("account", JSON.stringify(account));
     window.account = account;
   }),
 
@@ -24,7 +24,7 @@ const accountsStoreModels = {
 
   setAccount: action((state, account) => {
     console.log("Account", account);
-    //localStorage.setItem("account", JSON.stringify(account));
+    localStorage.setItem("account", JSON.stringify(account));
     state.account = account;
     state.refreshToken = account?.jwtToken;
     state.editAccount = account;
@@ -59,7 +59,7 @@ const accountsStoreModels = {
   }),
 
   clearAccount: action((state) => {
-    //localStorage.setItem("account", JSON.stringify({}));
+    localStorage.setItem("account", JSON.stringify({}));
     state.account = null;
     state.refreshToken = null;
     window.account = null;

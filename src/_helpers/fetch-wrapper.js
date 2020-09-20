@@ -41,18 +41,18 @@ function _delete(url) {
   return fetch(url, requestOptions).then(handleResponse);
 }
 
-// helper functions
+// helper functions +
 
 function authHeader(url) {
-  /* let user;
-   const json = localStorage.getItem("account");
+  let user;
+  const json = localStorage.getItem("account");
   console.log(json);
   if (json) {
     user = JSON.parse(json);
     console.log(user);
-  } */
+  }
 
-  const user = window.account;
+  //const user = window.account;
 
   const isLoggedIn = user && user.jwtToken;
   const isApiUrl = url.startsWith(process.env.REACT_APP_API_URL);
