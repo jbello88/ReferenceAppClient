@@ -3,7 +3,8 @@ import { useStoreState, useStoreActions } from "easy-peasy";
 import ReactMarkdown from "react-markdown";
 import { useHistory } from "react-router-dom";
 import Comments from "../page/Comments";
-import { MdAdd } from "react-icons/md";
+import Container from "react-bootstrap/Container";
+import { GoPlus } from "react-icons/go";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
@@ -30,23 +31,21 @@ export default function PageDisplay() {
       />
       <div className="mt-5"></div>
       <hr className="mt-3 mb-3" />
-      <div>
-        <Row>
-          <Col>
-            <h4 className="mt-5">Comments</h4>
-          </Col>
+      <Row>
+        <Col>
+          <h4 className="mt-1">Comments</h4>
+        </Col>
+        <Col>
           {user ? (
-            <Col>
-              <button
-                className="float-right btn btn-light"
-                onClick={addCommentHandler}
-              >
-                <MdAdd />
-              </button>
-            </Col>
+            <button
+              className="float-right btn btn-link"
+              onClick={addCommentHandler}
+            >
+              <GoPlus className="larger text-secondary mb-1" />
+            </button>
           ) : null}
-        </Row>
-      </div>
+        </Col>
+      </Row>
 
       <Comments
         className="float-none"

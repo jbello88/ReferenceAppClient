@@ -59,13 +59,13 @@ export default function Page() {
         {user?.role === "Admin" ? (
           <div className="float-right">
             {modus === "show" ? (
-              <button className="btn btn-light" onClick={handleDelete}>
-                <MdDelete />
+              <button className="btn btn-link" onClick={handleDelete}>
+                <MdDelete className="larger mt-1 text-secondary" />
               </button>
             ) : null}
 
-            <button className="btn btn-light" onClick={toogleEdit}>
-              <MdModeEdit />
+            <button className="btn btn-link" onClick={toogleEdit}>
+              <MdModeEdit className="larger mt-1 text-secondary" />
             </button>
           </div>
         ) : null}

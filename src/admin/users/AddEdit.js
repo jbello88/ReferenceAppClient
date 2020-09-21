@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useStoreState, useStoreActions } from "easy-peasy";
+import { useForm } from "react-hook-form";
+
+import { yupResolver } from "@hookform/resolvers";
+
+import { Input, Submit, Select } from "../../_components";
 
 function AddEdit({ history, match }) {
   const user = useStoreState((s) => s.aStore.editAccount);
@@ -21,6 +25,8 @@ function AddEdit({ history, match }) {
     }
     // eslint-disable-next-line
   }, []);
+
+  const options = ["", "User", "Admin"];
 
   const emptyValues = {
     userName: "",
@@ -93,133 +99,66 @@ function AddEdit({ history, match }) {
       });
   }
 
+  const formMethods = useForm({
+    defaultValues: initialValues,
+    mode: "onBlur",
+    resolver: yupResolver(validationSchema),
+  });
+
+  const { handleSubmit } = formMethods;
+
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={onSubmit}
-    >
-      {({ errors, touched, isSubmitting, setFieldValue }) => {
-        return (
-          <Form>
-            <h1>{isAddMode ? "Add User" : "Edit User"}</h1>
-            <div className="form-row">
-              <div className="form-group col">
-                <label>User Name</label>
-                <Field
-                  name="userName"
-                  type="text"
-                  className={
-                    "form-control" +
-                    (errors.userName && touched.userName ? " is-invalid" : "")
-                  }
-                />
-                <ErrorMessage
-                  name="userName"
-                  component="div"
-                  className="invalid-feedback"
-                />
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group col-7">
-                <label>Email</label>
-                <Field
-                  name="email"
-                  type="text"
-                  className={
-                    "form-control" +
-                    (errors.email && touched.email ? " is-invalid" : "")
-                  }
-                />
-                <ErrorMessage
-                  name="email"
-                  component="div"
-                  className="invalid-feedback"
-                />
-              </div>
-              <div className="form-group col">
-                <label>Role</label>
-                <Field
-                  name="role"
-                  as="select"
-                  className={
-                    "form-control" +
-                    (errors.role && touched.role ? " is-invalid" : "")
-                  }
-                >
-                  <option value=""></option>
-                  <option value="User">User</option>
-                  <option value="Admin">Admin</option>
-                </Field>
-                <ErrorMessage
-                  name="role"
-                  component="div"
-                  className="invalid-feedback"
-                />
-              </div>
-            </div>
-            {!isAddMode && (
-              <div>
-                <h3 className="pt-3">Change Password</h3>
-                <p>Leave blank to keep the same password</p>
-              </div>
-            )}
-            <div className="form-row">
-              <div className="form-group col">
-                <label>Password</label>
-                <Field
-                  name="password"
-                  type="password"
-                  className={
-                    "form-control" +
-                    (errors.password && touched.password ? " is-invalid" : "")
-                  }
-                />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="invalid-feedback"
-                />
-              </div>
-              <div className="form-group col">
-                <label>Confirm Password</label>
-                <Field
-                  name="confirmPassword"
-                  type="password"
-                  className={
-                    "form-control" +
-                    (errors.confirmPassword && touched.confirmPassword
-                      ? " is-invalid"
-                      : "")
-                  }
-                />
-                <ErrorMessage
-                  name="confirmPassword"
-                  component="div"
-                  className="invalid-feedback"
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="btn btn-primary"
-              >
-                {isSubmitting && (
-                  <span className="spinner-border spinner-border-sm mr-1"></span>
-                )}
-                Save
-              </button>
-              <Link to={isAddMode ? "." : ".."} className="btn btn-link">
-                Cancel
-              </Link>
-            </div>
-          </Form>
-        );
-      }}
-    </Formik>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <h1>{isAddMode ? "Add User" : "Edit User"}</h1>
+
+      <Input name="userName" label="Username" formMethods={formMethods} />
+
+      <div className="form-row">
+        <div className="col-7">
+          <Input name="email" label="Email" formMethods={formMethods} />
+        </div>
+        <div className="col">
+          <Select
+            name="role"
+            label="Role"
+            options={options}
+            formMethods={formMethods}
+          />
+        </div>
+      </div>
+
+      {!isAddMode && (
+        <div>
+          <h3 className="pt-3">Change Password</h3>
+          <p>Leave blank to keep the same password</p>
+        </div>
+      )}
+
+      <div className="form-row">
+        <div className="col">
+          <Input
+            name="password"
+            label="Password"
+            type="password"
+            formMethods={formMethods}
+          />
+        </div>
+        <div className="col">
+          <Input
+            name="confirmPassword"
+            label="Confirm Password"
+            type="password"
+            formMethods={formMethods}
+          />
+        </div>
+      </div>
+
+      <Submit label="Save" formMethods={formMethods}>
+        <Link to={isAddMode ? "." : ".."} className="btn btn-link">
+          Cancel
+        </Link>
+      </Submit>
+    </form>
   );
 }
 

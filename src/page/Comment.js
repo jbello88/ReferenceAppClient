@@ -28,11 +28,11 @@ export default function Comment({ data }) {
         <Card.Text>{data.content}</Card.Text>
         {user && (user.id === data.userId || user.role === "Admin") ? (
           <div className="float-right">
-            <button className="btn btn-light" onClick={handleEdit}>
-              <MdModeEdit />
+            <button className="btn btn-link" onClick={handleDelete}>
+              <MdDelete className="larger text-secondary" />
             </button>{" "}
-            <button className="btn btn-light" onClick={handleDelete}>
-              <MdDelete />
+            <button className="btn btn-link" onClick={handleEdit}>
+              <MdModeEdit className="larger text-secondary" />
             </button>{" "}
           </div>
         ) : null}

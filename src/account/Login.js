@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers";
 import * as Yup from "yup";
 import { useStoreActions } from "easy-peasy";
+import { Input, Submit } from "../_components";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Email is invalid").required("Email is required"),
@@ -16,11 +16,12 @@ function Login({ history, location }) {
   const alertError = useStoreActions((a) => a.iStore.error);
   const clearAlerts = useStoreActions((a) => a.iStore.clear);
 
-  const { handleSubmit, register, errors, formState } = useForm({
+  const formMethods = useForm({
     mode: "onBlur",
     resolver: yupResolver(validationSchema),
   });
-  const { isSubmitting } = formState;
+
+  const { handleSubmit } = formMethods;
 
   function onSubmit({ email, password }) {
     clearAlerts();
@@ -38,59 +39,25 @@ function Login({ history, location }) {
     <form onSubmit={handleSubmit(onSubmit)}>
       <h3 className="card-header">Login</h3>
       <div className="card-body">
-        <div className="form-group">
-          <label>Email</label>
-          <input
-            name="email"
-            ref={register}
-            type="text"
-            className={"form-control" + (errors.email ? " is-invalid" : "")}
-          />
-          <ErrorMessage
-            className="invalid-feedback"
-            errors={errors}
-            name="email"
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            name="password"
-            ref={register}
-            type="password"
-            className={"form-control" + (errors.password ? " is-invalid" : "")}
-          />
-          <ErrorMessage
-            className="invalid-feedback"
-            errors={errors}
-            name="password"
-          />
-        </div>
-
-        <div className="form-row">
-          <div className="form-group col">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="btn btn-primary"
-            >
-              {isSubmitting && (
-                <span className="spinner-border spinner-border-sm mr-1"></span>
-              )}
-              Login
-            </button>
-            <Link to="register" className="btn btn-link">
-              Register
-            </Link>
-          </div>
-
-          <div className="form-group col text-right">
-            <Link to="forgot-password" className="btn btn-link pr-0">
-              Forgot Password?
-            </Link>
-          </div>
-        </div>
+        <Input name="email" label="Email" formMethods={formMethods} />
+        <Input
+          name="password"
+          label="Password"
+          formMethods={formMethods}
+          type="password"
+        />
+        <Submit label="Login" formMethods={formMethods}>
+          <Link to="register" className="btn btn-link">
+            Register
+          </Link>
+          <Link
+            to="forgot-password"
+            className="btn btn-link pr-0"
+            posright="true"
+          >
+            Forgot Password?
+          </Link>
+        </Submit>
       </div>
     </form>
   );

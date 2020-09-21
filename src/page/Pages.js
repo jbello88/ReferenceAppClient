@@ -4,7 +4,7 @@ import PageSummary from "./PageSummary";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { MdAdd } from "react-icons/md";
+import { GoPlus } from "react-icons/go";
 import { useHistory } from "react-router-dom";
 
 export default function Pages() {
@@ -19,11 +19,17 @@ export default function Pages() {
 
   return (
     <>
-      <button className="float-right btn btn-light" onClick={addPageHandler}>
-        <MdAdd />
-      </button>
       <Container className="w-auto mt-5 ">
-        <h2 className="mb-3 ml-5">Documentation</h2>
+        <button
+          className="float-right btn btn-link mr-5"
+          onClick={addPageHandler}
+        >
+          <GoPlus className="larger mt-1  text-secondary" />
+        </button>
+        <Row>
+          <h2 className="mb-3 ml-5">Documentation</h2>
+        </Row>
+
         {pages.map((p) => (
           <Row key={p._id}>
             <Col>

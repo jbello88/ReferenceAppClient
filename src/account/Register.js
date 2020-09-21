@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers";
 import { useStoreActions } from "easy-peasy";
+import { Input, Submit } from "../_components";
 
 const validationSchema = Yup.object().shape({
   userName: Yup.string().required("Username is required"),
@@ -22,11 +22,12 @@ function Register({ history }) {
   const alertSuccess = useStoreActions((a) => a.iStore.success);
   const alertError = useStoreActions((a) => a.iStore.error);
 
-  const { handleSubmit, register, errors, formState } = useForm({
+  const formMethods = useForm({
     mode: "onBlur",
     resolver: yupResolver(validationSchema),
   });
-  const { isSubmitting } = formState;
+
+  const { handleSubmit } = formMethods;
 
   function onSubmit(data) {
     registerUser(data)
@@ -47,91 +48,33 @@ function Register({ history }) {
     <form onSubmit={handleSubmit(onSubmit)}>
       <h3 className="card-header">Register</h3>
       <div className="card-body">
-        <div className="form-row">
-          <div className="form-group col">
-            <label>Username</label>
-            <input
-              name="userName"
-              ref={register}
-              type="text"
-              className={
-                "form-control" + (errors.userName ? " is-invalid" : "")
-              }
-            />
-            <ErrorMessage
-              className="invalid-feedback"
-              errors={errors}
-              name="userName"
-            />
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label>Email</label>
-          <input
-            name="email"
-            ref={register}
-            type="text"
-            className={"form-control" + (errors.email ? " is-invalid" : "")}
-          />
-          <ErrorMessage
-            className="invalid-feedback"
-            errors={errors}
-            name="email"
-          />
-        </div>
+        <Input name="userName" label="Username" formMethods={formMethods} />
+        <Input name="email" label="Email" formMethods={formMethods} />
 
         <div className="form-row">
-          <div className="form-group col">
-            <label>Password</label>
-            <input
+          <div className="col">
+            <Input
               name="password"
-              ref={register}
+              label="Password"
               type="password"
-              className={
-                "form-control" + (errors.password ? " is-invalid" : "")
-              }
-            />
-            <ErrorMessage
-              className="invalid-feedback"
-              errors={errors}
-              name="password"
+              formMethods={formMethods}
             />
           </div>
-
-          <div className="form-group col">
-            <label>Confirm Password</label>
-            <input
+          <div className="col">
+            <Input
               name="confirmPassword"
-              ref={register}
+              label="Confirm Password"
               type="password"
-              className={
-                "form-control" + (errors.confirmPassword ? " is-invalid" : "")
-              }
-            />
-            <ErrorMessage
-              className="invalid-feedback"
-              errors={errors}
-              name="confirmPassword"
+              formMethods={formMethods}
             />
           </div>
         </div>
 
-        <div className="form-group">
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="btn btn-primary"
-          >
-            {isSubmitting && (
-              <span className="spinner-border spinner-border-sm mr-1"></span>
-            )}
-            Register
-          </button>
-          <Link to="login" className="btn btn-link">
+        <Submit label="Register" formMethods={formMethods}>
+          <Link to="login" className="btn btn-link" posright="false">
             Cancel
           </Link>
-        </div>
+        </Submit>
       </div>
     </form>
   );

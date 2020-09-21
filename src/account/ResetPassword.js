@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { useForm } from "react-hook-form";
 import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers";
 import { useStoreActions } from "easy-peasy";
+import { Input, Submit } from "../_components";
+
+const validationSchema = Yup.object().shape({
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Confirm Password is required"),
+});
 
 function ResetPassword({ history }) {
   const validateResetToken = useStoreActions(
@@ -15,6 +26,7 @@ function ResetPassword({ history }) {
   const clearAlerts = useStoreActions((a) => a.iStore.clear);
 
   const resetPassword = useStoreActions((a) => a.aStore.resetPassword);
+
   const TokenStatus = {
     Validating: "Validating",
     Valid: "Valid",
@@ -41,20 +53,13 @@ function ResetPassword({ history }) {
     // eslint-disable-next-line
   }, []);
 
-  function getForm() {
-    const initialValues = {
-      password: "",
-      confirmPassword: "",
-    };
+  const formMethods = useForm({
+    mode: "onBlur",
+    resolver: yupResolver(validationSchema),
+  });
 
-    const validationSchema = Yup.object().shape({
-      password: Yup.string()
-        .min(6, "Password must be at least 6 characters")
-        .required("Password is required"),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref("password"), null], "Passwords must match")
-        .required("Confirm Password is required"),
-    });
+  function getForm(formMethods) {
+    const { handleSubmit } = formMethods;
 
     function onSubmit({ password, confirmPassword }, { setSubmitting }) {
       clearAlerts();
@@ -73,74 +78,34 @@ function ResetPassword({ history }) {
     }
 
     return (
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-      >
-        {({ errors, touched, isSubmitting }) => (
-          <Form>
-            <div className="form-group">
-              <label>Password</label>
-              <Field
-                name="password"
-                type="password"
-                className={
-                  "form-control" +
-                  (errors.password && touched.password ? " is-invalid" : "")
-                }
-              />
-              <ErrorMessage
-                name="password"
-                component="div"
-                className="invalid-feedback"
-              />
-            </div>
-            <div className="form-group">
-              <label>Confirm Password</label>
-              <Field
-                name="confirmPassword"
-                type="password"
-                className={
-                  "form-control" +
-                  (errors.confirmPassword && touched.confirmPassword
-                    ? " is-invalid"
-                    : "")
-                }
-              />
-              <ErrorMessage
-                name="confirmPassword"
-                component="div"
-                className="invalid-feedback"
-              />
-            </div>
-            <div className="form-row">
-              <div className="form-group col">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="btn btn-primary"
-                >
-                  {isSubmitting && (
-                    <span className="spinner-border spinner-border-sm mr-1"></span>
-                  )}
-                  Reset Password
-                </button>
-                <Link to="/login" className="btn btn-link">
-                  Cancel
-                </Link>
-              </div>
-            </div>
-          </Form>
-        )}
-      </Formik>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          name="password"
+          label="Password"
+          type="password"
+          formMethods={formMethods}
+        />
+
+        <Input
+          name="confirmPassword"
+          label="Confirm Password"
+          type="password"
+          formMethods={formMethods}
+        />
+
+        <Submit label="Reset Password" formMethods={formMethods}>
+          <Link to="login" className="btn btn-link" posright="false">
+            Cancel
+          </Link>
+        </Submit>
+      </form>
     );
   }
 
-  function getBody() {
+  function getBody(formMethods) {
     switch (tokenStatus) {
       case TokenStatus.Valid:
-        return getForm();
+        return getForm(formMethods);
       case TokenStatus.Invalid:
         return (
           <div>
@@ -158,7 +123,7 @@ function ResetPassword({ history }) {
   return (
     <div>
       <h3 className="card-header">Reset Password</h3>
-      <div className="card-body">{getBody()}</div>
+      <div className="card-body">{getBody(formMethods)}</div>
     </div>
   );
 }
