@@ -1,8 +1,10 @@
+let token = null;
 export const fetchWrapper = {
   get,
   post,
   put,
   delete: _delete,
+  setToken,
 };
 
 function get(url) {
@@ -44,22 +46,21 @@ function _delete(url) {
 // helper functions +
 
 function authHeader(url) {
-  let user;
+  /*   let user;
   const json = localStorage.getItem("account");
   console.log(json);
   if (json) {
     user = JSON.parse(json);
     console.log(user);
-  }
+  } */
 
   //const user = window.account;
 
-  const isLoggedIn = user && user.jwtToken;
   const isApiUrl = url.startsWith(process.env.REACT_APP_API_URL);
-  if (isLoggedIn && isApiUrl) {
+  if (token && isApiUrl) {
     console.log("Token added");
     console.log(window.account);
-    return { Authorization: `Bearer ${user.jwtToken}` };
+    return { Authorization: `Bearer ${token}` };
   } else {
     return {};
   }
@@ -76,4 +77,8 @@ function handleResponse(response) {
 
     return data;
   });
+}
+
+function setToken(jwtToken) {
+  token = jwtToken;
 }

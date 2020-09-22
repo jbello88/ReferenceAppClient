@@ -16,6 +16,7 @@ export const accountService = {
   create,
   update,
   delete: _delete,
+  setToken,
 };
 
 function login(email, password) {
@@ -83,4 +84,8 @@ function _delete(id) {
     } */
     return x;
   });
+}
+
+function setToken(jwtToken) {
+  fetchWrapper.setToken(jwtToken);
 }
