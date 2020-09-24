@@ -21,7 +21,7 @@ export default function Page() {
   const history = useHistory();
 
   useEffect(() => {
-    if (slug === "NewPage") {
+    if (slug === "newPage") {
       setModus("edit");
       return;
     }
@@ -56,7 +56,7 @@ export default function Page() {
   return (
     <>
       <Container className="w-auto mt-5 ">
-        {user?.role === "Admin" ? (
+        {user && (user?.role === "Admin" || user?.id === page.ownerId) ? (
           <div className="float-right">
             {modus === "show" ? (
               <button className="btn btn-link" onClick={handleDelete}>
@@ -64,13 +64,15 @@ export default function Page() {
               </button>
             ) : null}
 
-            <button className="btn btn-link" onClick={toogleEdit}>
-              <MdModeEdit className="larger mt-1 text-secondary" />
-            </button>
+            {modus === "show" ? (
+              <button className="btn btn-link" onClick={toogleEdit}>
+                <MdModeEdit className="larger mt-1 text-secondary" />
+              </button>
+            ) : null}
           </div>
         ) : null}
         {modus === "show" ? <PageDisplay /> : null}
-        {modus === "edit" ? <PageEdit page={page} /> : null}
+        {modus === "edit" ? <PageEdit page={page} setModus={setModus} /> : null}
       </Container>
       <Modal show={showConfirmation} onHide={() => setShowConfirmation(false)}>
         <Modal.Header closeButton>

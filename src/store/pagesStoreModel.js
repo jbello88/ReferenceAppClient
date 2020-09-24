@@ -20,12 +20,14 @@ const pagesStoreModel = {
     state.comment = newComment;
   }),
 
-  createPage: action((state) => {
+  createPage: action((state, account) => {
     const newPage = {
       title: "New Page Title",
       slug: "newPage",
       subtitle: "",
       content: "",
+      ownerId: account.id,
+      ownerName: account.userName,
       comments: [],
     };
     state.page = newPage;
@@ -79,11 +81,6 @@ const pagesStoreModel = {
 
   loadPage: thunk(async (actions, slug, helpers) => {
     const localState = helpers.getState();
-    /*     if (localState.cachedPages.has(slug)) {
-      console.log("using Cached version");
-      actions.setPage(localState.cachedPages.get(slug));
-      return;
-    } */
 
     const smallPage = localState.pages.find((p) => p.slug === slug);
 
@@ -93,7 +90,7 @@ const pagesStoreModel = {
   }),
 
   updatePageContent: thunk(async (actions, payload, helpers) => {
-    const { _id, slug, title, subtitle, content } = payload;
+    const { _id, slug, title, subtitle, content, ownerName, ownerId } = payload;
     const toUpdate = {
       slug,
       title,
@@ -106,6 +103,8 @@ const pagesStoreModel = {
       const updatedPage = await pageService.update(_id, toUpdate);
       actions.setPage(updatedPage);
     } else {
+      toUpdate.ownerName = ownerName;
+      toUpdate.ownerId = ownerId;
       const newPage = await pageService.create(toUpdate);
       actions.addPage(newPage);
     }

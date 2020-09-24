@@ -6,7 +6,6 @@ import { history, Role } from "../_helpers";
 function Nav() {
   const user = useStoreState((s) => s.aStore.account);
   const logout = useStoreActions((a) => a.aStore.logout);
-  const apiDocPath = `${process.env.REACT_APP_API_URL}/api/api-docs`;
 
   return (
     <div>
@@ -18,12 +17,7 @@ function Nav() {
           <NavLink exact to="/content" className="nav-item nav-link">
             Documentation
           </NavLink>
-          <a className="nav-item nav-link" href={apiDocPath} target="_blank">
-            API-Documentation
-          </a>
-          <NavLink to="/profile" className="nav-item nav-link">
-            Profile
-          </NavLink>
+
           {user && user.role === Role.Admin && (
             <NavLink to="/admin" className="nav-item nav-link">
               Admin
@@ -32,21 +26,24 @@ function Nav() {
         </div>
         <div className="navbar-nav ml-auto">
           {user && (
-            <span className="navbar-text mr-4">User: {user.userName}</span>
+            <NavLink to="/profile" className="nav-item nav-link">
+              User: {user.userName}
+            </NavLink>
           )}
           {user && (
-            <a onClick={() => logout()} className="nav-item nav-link ">
+            <NavLink
+              exact
+              to="/account/login"
+              onClick={() => logout()}
+              className="nav-item nav-link "
+            >
               Logout
-            </a>
+            </NavLink>
           )}
           {!user && (
-            <a
-              className="nav-item nav-link"
-              onClick={() => history.push("/account/login")}
-              variant="outline-success"
-            >
+            <NavLink className="nav-item nav-link" to="/account/login">
               Login
-            </a>
+            </NavLink>
           )}
         </div>
       </nav>

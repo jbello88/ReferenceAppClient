@@ -58,8 +58,6 @@ function authHeader(url) {
 
   const isApiUrl = url.startsWith(process.env.REACT_APP_API_URL);
   if (token && isApiUrl) {
-    console.log("Token added");
-    console.log(window.account);
     return { Authorization: `Bearer ${token}` };
   } else {
     return {};

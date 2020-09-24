@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { MdSave } from "react-icons/md";
 import { FileUploader } from "./FileUploader";
 
-export default function PageEdit({ page }) {
+export default function PageEdit({ page, setModus }) {
   //const page = useStoreState((state) => state.pStore.page);
   const updatePageContent = useStoreActions(
     (actions) => actions.pStore.updatePageContent
@@ -30,17 +30,20 @@ export default function PageEdit({ page }) {
   defaultValues.subtitle = page.subtitle;
   defaultValues.slug = page.slug;
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const para = {
       _id: page._id,
       slug: data.slug,
       title: data.title,
       subtitle: data.subtitle,
       content: eduRef?.current,
+      ownerName: page.ownerName,
+      ownerId: page.ownerId,
     };
 
     console.log(para);
-    updatePageContent(para);
+    await updatePageContent(para);
+    setModus("show");
   };
 
   return (

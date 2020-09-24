@@ -1,6 +1,7 @@
 import React from "react";
 
 function Home() {
+  const apiDocPath = `${process.env.REACT_APP_API_URL}/api/api-docs`;
   return (
     <div className="m-4">
       <div className="container">
@@ -9,59 +10,41 @@ function Home() {
         <div className="larger">
           <p>
             It is the purpose of this application to be used as a correct and
-            well coded example of the implementation of a CRUD application with
-            autherization and messaging system.
+            well coded example of the implementation of a CRUD application based
+            on the MERN-stack including authorization.
           </p>
+          <img
+            src="./images/mernstack.png"
+            alt="Mern-Stack"
+            className="img-fluid mb-4"
+          />
           <p>
-            If your are building an app you can always go to this app an find a
-            good and working implementation of the basic functionality needed to
-            build such an app.
+            This CRUD application allows you to manage documentation of the
+            system itself. The documentation can be entered as markdown and
+            users can leave comments for each document.
           </p>
-        </div>
 
-        <h3>Functionality of the App</h3>
-        <ul className="larger feature">
-          <li>
-            The documentation pages can be entered in the markdown syntax, which
-            supports many formatting options including including pictures in the
-            documents. Pictures can be uploaded and included into the
-            documentation.
-          </li>
-          <li>
-            The authorization includes login, sign-up, email verification,
-            password reset, user-roles, user can edit their profile and an
-            administrator can add, edit and delete all the users.
-          </li>
-          <li>
-            The application is built on the Redux pattern and uses Easy-Peasy to
-            implement it
-          </li>
-          <li>For each documentation page the users can leave comments.</li>
-          <li>
-            A User can view all the pages even when he is not logged in. A user
-            must me logged in to leave a comment.
-          </li>
-          <li>
-            A user can edit and/or delete his comments but can not edit or
-            delete comments made by other users
-          </li>
-          <li>
-            Pages can be added, edited and deleted only by users who belong to
-            the admin group.
-          </li>
-          <li>
-            Pages can be added, edited and deleted only by users who belong to
-            the admin group.
-          </li>
-          <li>
-            An administrator can edit and delete comments even if they were made
-            by another user.
-          </li>
-          <li>
-            The swagger documentation of the underlying api can be accessed via
-            the menu.
-          </li>
-        </ul>
+          <p>
+            In addition of the basic CRUD functionality the app contains the
+            following extra elements:
+          </p>
+          <ul className="larger feature">
+            <li>Authorization</li>
+            <li>Handling of Markdown</li>
+            <li>
+              File-upload for pictures (used in Markdown) and storage of those
+              pictures in MongoDb
+            </li>
+            <li>Redux pattern implemented with easy-peasy</li>
+            <li>An efficent way to display messages to the user,</li>
+          </ul>
+        </div>
+        <h3 className="mt-5">
+          The Swagger specification of the api can be found here :
+          <a className="nav-item nav-link d-inline" href={apiDocPath}>
+            API-Documentation{" "}
+          </a>
+        </h3>
       </div>
     </div>
   );

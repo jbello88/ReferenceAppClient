@@ -23,6 +23,7 @@ export default function PageDisplay() {
   return (
     <>
       <h2>{page.title}</h2>
+      {page.ownerName ? <p>created by: {page.ownerName}</p> : null}
 
       <ReactMarkdown
         source={page.content}
