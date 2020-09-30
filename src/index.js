@@ -1,13 +1,13 @@
-import React from "react";
-import { Router } from "react-router-dom";
-import { render } from "react-dom";
+import React from 'react';
+import { Router } from 'react-router-dom';
+import { render } from 'react-dom';
 
-import { history } from "./_helpers";
-import { StoreProvider } from "easy-peasy";
-import store from "./store";
-import { App } from "./app";
+import { history } from './_helpers';
+import { StoreProvider } from 'easy-peasy';
+import store from './store';
+import { App } from './app';
 
-import "./styles.css";
+import './style.css';
 
 render(
   <React.StrictMode>
@@ -17,5 +17,5 @@ render(
       </Router>
     </StoreProvider>
   </React.StrictMode>,
-  document.getElementById("app")
+  document.getElementById('app')
 );

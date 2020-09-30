@@ -34,7 +34,7 @@ function put(url, body) {
   return fetch(url, requestOptions).then(handleResponse);
 }
 
-// prefixed with underscored because delete is a reserved word in javascript
+// prefixed with underscored because delete is a reserved word in javascript ff
 function _delete(url) {
   const requestOptions = {
     method: "DELETE",

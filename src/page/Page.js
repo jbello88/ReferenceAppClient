@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useStoreState, useStoreActions } from "easy-peasy";
-import Container from "react-bootstrap/Container";
-import PageDisplay from "./PageDisplay";
-import PageEdit from "./PageEdit";
-import Modal from "react-bootstrap/modal";
-import Button from "react-bootstrap/button";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useStoreState, useStoreActions } from 'easy-peasy';
+import Container from 'react-bootstrap/Container';
+import PageDisplay from './PageDisplay';
+import PageEdit from './PageEdit';
+import Modal from 'react-bootstrap/modal';
+import Button from 'react-bootstrap/button';
+import { useHistory } from 'react-router-dom';
 
-import { MdModeEdit, MdDelete } from "react-icons/md";
+import { MdModeEdit, MdDelete } from 'react-icons/md';
 
 export default function Page() {
   let { slug } = useParams();
-  const page = useStoreState((state) => state.pStore.page);
-  const user = useStoreState((state) => state.aStore.account);
-  const loadPage = useStoreActions((a) => a.pStore.loadPage);
-  const deletePage = useStoreActions((a) => a.pStore.deletePage);
-  const [modus, setModus] = useState("show");
+  const page = useStoreState(state => state.pStore.page);
+  const user = useStoreState(state => state.aStore.account);
+  const loadPage = useStoreActions(a => a.pStore.loadPage);
+  const deletePage = useStoreActions(a => a.pStore.deletePage);
+  const [modus, setModus] = useState('show');
   const [showConfirmation, setShowConfirmation] = useState();
   const history = useHistory();
 
   useEffect(() => {
-    if (slug === "newPage") {
-      setModus("edit");
+    if (slug === 'newPage') {
+      setModus('edit');
       return;
     }
     loadPage(slug);
@@ -30,16 +30,16 @@ export default function Page() {
   }, []);
 
   if (!page) {
-    return <div>still loading</div>;
+    history.push('/');
   }
 
   const toogleEdit = () => {
-    if (modus === "edit") {
-      setModus("show");
+    if (modus === 'edit') {
+      setModus('show');
       return;
     }
 
-    setModus("edit");
+    setModus('edit');
   };
 
   const handleDelete = () => {
@@ -50,29 +50,29 @@ export default function Page() {
   const deleteConfirmed = () => {
     deletePage(page);
     setShowConfirmation(false);
-    history.push("/content");
+    history.push('/content');
   };
 
   return (
     <>
       <Container className="w-auto mt-5 ">
-        {user && (user?.role === "Admin" || user?.id === page.ownerId) ? (
+        {user && (user?.role === 'Admin' || user?.id === page.ownerId) ? (
           <div className="float-right">
-            {modus === "show" ? (
+            {modus === 'show' ? (
               <button className="btn btn-link" onClick={handleDelete}>
                 <MdDelete className="larger mt-1 text-secondary" />
               </button>
             ) : null}
 
-            {modus === "show" ? (
+            {modus === 'show' ? (
               <button className="btn btn-link" onClick={toogleEdit}>
                 <MdModeEdit className="larger mt-1 text-secondary" />
               </button>
             ) : null}
           </div>
         ) : null}
-        {modus === "show" ? <PageDisplay /> : null}
-        {modus === "edit" ? <PageEdit page={page} setModus={setModus} /> : null}
+        {modus === 'show' ? <PageDisplay /> : null}
+        {modus === 'edit' ? <PageEdit page={page} setModus={setModus} /> : null}
       </Container>
       <Modal show={showConfirmation} onHide={() => setShowConfirmation(false)}>
         <Modal.Header closeButton>
@@ -80,10 +80,7 @@ export default function Page() {
         </Modal.Header>
         <Modal.Body>Do you really want to delete this page?</Modal.Body>
         <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => setShowConfirmation(false)}
-          >
+          <Button variant="secondary" onClick={() => setShowConfirmation(false)}>
             Cancel
           </Button>
           <Button variant="primary" onClick={deleteConfirmed}>

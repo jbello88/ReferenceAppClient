@@ -1,20 +1,20 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import * as Yup from "yup";
-import { useStoreState, useStoreActions } from "easy-peasy";
-import { useForm } from "react-hook-form";
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import * as Yup from 'yup';
+import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useForm } from 'react-hook-form';
 
-import { yupResolver } from "@hookform/resolvers";
+import { yupResolver } from '@hookform/resolvers';
 
-import { Input, Submit, Select } from "../../_components";
+import { Input, Submit, Select } from '../../_components';
 
 function AddEdit({ history, match }) {
-  const user = useStoreState((s) => s.aStore.editAccount);
-  const create = useStoreActions((a) => a.aStore.createAccount);
-  const update = useStoreActions((a) => a.aStore.updateAccount);
-  const getById = useStoreActions((a) => a.aStore.getAccountById);
-  const alertSuccess = useStoreActions((a) => a.iStore.success);
-  const alertError = useStoreActions((a) => a.iStore.error);
+  const user = useStoreState(s => s.aStore.editAccount);
+  const create = useStoreActions(a => a.aStore.createAccount);
+  const update = useStoreActions(a => a.aStore.updateAccount);
+  const getById = useStoreActions(a => a.aStore.getAccountById);
+  const alertSuccess = useStoreActions(a => a.iStore.success);
+  const alertError = useStoreActions(a => a.iStore.error);
 
   const id = match.params.id;
   const isAddMode = !id;
@@ -26,38 +26,38 @@ function AddEdit({ history, match }) {
     // eslint-disable-next-line
   }, []);
 
-  const options = ["", "User", "Admin"];
+  const options = ['', 'User', 'Admin'];
 
   const emptyValues = {
-    userName: "",
-    email: "",
-    role: "",
-    password: "",
-    confirmPassword: "",
+    userName: '',
+    email: '',
+    role: '',
+    password: '',
+    confirmPassword: '',
   };
 
   const userValues = {
     userName: user?.userName,
     email: user?.email,
     role: user?.role,
-    password: "",
-    confirmPassword: "",
+    password: '',
+    confirmPassword: '',
   };
 
   const initialValues = isAddMode ? emptyValues : userValues;
 
   const validationSchema = Yup.object().shape({
-    userName: Yup.string().required("Username is required"),
-    email: Yup.string().email("Email is invalid").required("Email is required"),
-    role: Yup.string().required("Role is required"),
+    userName: Yup.string().required('Username is required'),
+    email: Yup.string().email('Email is invalid').required('Email is required'),
+    role: Yup.string().required('Role is required'),
     password: Yup.string()
-      .concat(isAddMode ? Yup.string().required("Password is required") : null)
-      .min(6, "Password must be at least 6 characters"),
+      .concat(isAddMode ? Yup.string().required('Password is required') : null)
+      .min(6, 'Password must be at least 6 characters'),
     confirmPassword: Yup.string()
-      .when("password", (password, schema) => {
-        if (password) return schema.required("Confirm Password is required");
+      .when('password', (password, schema) => {
+        if (password) return schema.required('Confirm Password is required');
       })
-      .oneOf([Yup.ref("password")], "Passwords must match"),
+      .oneOf([Yup.ref('password')], 'Passwords must match'),
   });
 
   function onSubmit(fields, { setStatus, setSubmitting }) {
@@ -73,12 +73,12 @@ function AddEdit({ history, match }) {
     create(fields)
       .then(() => {
         alertSuccess({
-          message: "User added successfully",
+          message: 'User added successfully',
           keepAfterRouteChange: true,
         });
-        history.push(".");
+        history.push('.');
       })
-      .catch((error) => {
+      .catch(error => {
         setSubmitting(false);
         alertError({ message: error });
       });
@@ -88,12 +88,12 @@ function AddEdit({ history, match }) {
     update({ id: id, params: fields })
       .then(() => {
         alertSuccess({
-          message: "Update successful",
+          message: 'Update successful',
           keepAfterRouteChange: true,
         });
-        history.push("..");
+        history.push('..');
       })
-      .catch((error) => {
+      .catch(error => {
         setSubmitting(false);
         alertError({ message: error });
       });
@@ -101,64 +101,52 @@ function AddEdit({ history, match }) {
 
   const formMethods = useForm({
     defaultValues: initialValues,
-    mode: "onBlur",
+    mode: 'onBlur',
     resolver: yupResolver(validationSchema),
   });
 
   const { handleSubmit } = formMethods;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <h1>{isAddMode ? "Add User" : "Edit User"}</h1>
+    <div className="message mx-6">
+      <div className="message-header">{isAddMode ? 'Add User' : 'Edit User'}</div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="section">
+          <Input name="userName" label="Username" formMethods={formMethods} />
 
-      <Input name="userName" label="Username" formMethods={formMethods} />
+          <div className="columns">
+            <div className="column">
+              <Input name="email" label="Email" formMethods={formMethods} />
+            </div>
+            <div className="column">
+              <Select name="role" label="Role" options={options} formMethods={formMethods} />
+            </div>
+          </div>
 
-      <div className="form-row">
-        <div className="col-7">
-          <Input name="email" label="Email" formMethods={formMethods} />
-        </div>
-        <div className="col">
-          <Select
-            name="role"
-            label="Role"
-            options={options}
-            formMethods={formMethods}
-          />
-        </div>
-      </div>
+          {!isAddMode && (
+            <div className="my-2">
+              <h3 className="title pt-3 is-size-5">Change Password</h3>
+              <div className="subtitle is-size-6">Leave blank to keep the same password</div>
+            </div>
+          )}
 
-      {!isAddMode && (
-        <div>
-          <h3 className="pt-3">Change Password</h3>
-          <p>Leave blank to keep the same password</p>
-        </div>
-      )}
+          <div className="columns">
+            <div className="column">
+              <Input name="password" label="Password" type="password" formMethods={formMethods} />
+            </div>
+            <div className="column">
+              <Input name="confirmPassword" label="Confirm Password" type="password" formMethods={formMethods} />
+            </div>
+          </div>
 
-      <div className="form-row">
-        <div className="col">
-          <Input
-            name="password"
-            label="Password"
-            type="password"
-            formMethods={formMethods}
-          />
+          <Submit label="Save" formMethods={formMethods}>
+            <Link to={isAddMode ? '.' : '..'} className="button is-link is-light level-item">
+              Cancel
+            </Link>
+          </Submit>
         </div>
-        <div className="col">
-          <Input
-            name="confirmPassword"
-            label="Confirm Password"
-            type="password"
-            formMethods={formMethods}
-          />
-        </div>
-      </div>
-
-      <Submit label="Save" formMethods={formMethods}>
-        <Link to={isAddMode ? "." : ".."} className="btn btn-link">
-          Cancel
-        </Link>
-      </Submit>
-    </form>
+      </form>
+    </div>
   );
 }
 
