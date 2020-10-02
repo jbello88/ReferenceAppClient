@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import Container from 'react-bootstrap/Container';
 import PageDisplay from './PageDisplay';
 import PageEdit from './PageEdit';
 import Modal from 'react-bootstrap/modal';
@@ -55,7 +54,7 @@ export default function Page() {
 
   return (
     <>
-      <Container className="w-auto mt-5 ">
+      <div className="section">
         {user && (user?.role === 'Admin' || user?.id === page.ownerId) ? (
           <div className="float-right">
             {modus === 'show' ? (
@@ -73,7 +72,7 @@ export default function Page() {
         ) : null}
         {modus === 'show' ? <PageDisplay /> : null}
         {modus === 'edit' ? <PageEdit page={page} setModus={setModus} /> : null}
-      </Container>
+      </div>
       <Modal show={showConfirmation} onHide={() => setShowConfirmation(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Confirmation</Modal.Title>

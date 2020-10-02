@@ -22,7 +22,7 @@ export default function Comment({ data }) {
   };
 
   return (
-    <div classNam="section my-1 py-2">
+    <div className="section my-1 py-2">
       <div className="box">
         <div>
           <div className="subtitle">Comment by {data.userName}</div>

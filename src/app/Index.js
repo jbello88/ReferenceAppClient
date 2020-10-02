@@ -8,8 +8,9 @@ import { Profile } from '../profile';
 import { Admin } from '../admin';
 import { Account } from '../account';
 import Pages from '../page/Pages';
-import Page from '../page/Page';
 import CommentEdit from '../page/CommentEdit';
+import PageDisplay from '../page/PageDisplay';
+import PageEdit from '../page/PageEdit';
 
 function App() {
   const { pathname } = useLocation();
@@ -41,18 +42,21 @@ function App() {
   return (
     <div className={'container'}>
       <Nav />
-      <Alert />
-      <Switch>
-        <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
-        <Route exact path="/" component={Home} />
-        <Route exact path="/content" component={Pages} />
-        <Route path="/topic/:slug" component={Page} />
+      <div className="section">
+        <Alert />
+        <Switch>
+          <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
+          <Route exact path="/" component={Home} />
+          <Route exact path="/content" component={Pages} />
+          <Route path="/topic/show/:slug" component={PageDisplay} />
+          <PrivateRoute path="/topic/edit/:slug" component={PageEdit} />
 
-        <PrivateRoute path="/profile" component={Profile} />
-        <PrivateRoute path="/admin" roles={[Role.Admin]} component={Admin} />
-        <Route path="/account" component={Account} />
-        <Route path="/comment" component={CommentEdit} />
-      </Switch>
+          <PrivateRoute path="/profile" component={Profile} />
+          <PrivateRoute path="/admin" roles={[Role.Admin]} component={Admin} />
+          <Route path="/account" component={Account} />
+          <Route path="/comment" component={CommentEdit} />
+        </Switch>
+      </div>
     </div>
   );
 }

@@ -23,28 +23,24 @@ export default function Pages() {
   };
 
   return (
-    <div className="container">
-      <div className="section my-1 pt-2">
-        <div className="level">
-          <div className=" level-left">
-            <div className="section level-item my-0 py-0">
-              <h2 className="title  is-size-2">Documentation</h2>
-            </div>
-          </div>
-          <div className="level-right">
-            {user ? (
-              <button className="button is-light level-item" onClick={addPageHandler}>
-                <GoPlus />
-              </button>
-            ) : null}
-          </div>
+    <div>
+      <div className="level">
+        <div className=" level-left">
+          <h2 className="title  is-size-2">Documentation</h2>
         </div>
-        {pages.map(p => (
-          <div key={p._id}>
-            <PageSummary page={p} />
-          </div>
-        ))}
+        <div className="level-right">
+          {user ? (
+            <button className="button is-light level-item" onClick={addPageHandler}>
+              <GoPlus />
+            </button>
+          ) : null}
+        </div>
       </div>
+      {pages.map(p => (
+        <div key={p._id}>
+          <PageSummary page={p} />
+        </div>
+      ))}
     </div>
   );
 }

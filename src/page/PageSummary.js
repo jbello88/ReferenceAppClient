@@ -7,11 +7,9 @@ export default function PageSummary({ page }) {
   console.log(page);
 
   return (
-    <div className="section my-1 py-2">
-      <div className="box" onClick={() => history.push('/topic/' + page.slug)}>
-        <div className="title is-size-5"> {page.title} </div>
-        <div className="subtitle is-size-6"> {page.subtitle} </div>
-      </div>
+    <div className="box my-2" onClick={() => history.push('/topic/show/' + page.slug)}>
+      <div className="title is-size-5"> {page.title} </div>
+      <div className="subtitle is-size-6"> {page.subtitle} </div>
     </div>
   );
 }

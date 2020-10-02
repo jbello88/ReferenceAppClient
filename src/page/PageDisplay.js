@@ -1,40 +1,72 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { useHistory } from 'react-router-dom';
 import Comments from '../page/Comments';
-import Container from 'react-bootstrap/Container';
 import { GoPlus } from 'react-icons/go';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { CloseButton } from 'react-bootstrap';
+import { UserMatchOrAdmin } from '../_components';
+import { MdModeEdit, MdDelete } from 'react-icons/md';
 
 export default function PageDisplay() {
   const page = useStoreState(state => state.pStore.page);
   const user = useStoreState(s => s.aStore.account);
+  const loadPage = useStoreActions(a => a.pStore.loadPage);
   const createNewComment = useStoreActions(a => a.pStore.createComment);
-
   const history = useHistory();
+
+  let { slug } = useParams();
+
+  useEffect(() => {
+    if (slug === 'newPage') {
+      history.push(`/topic/edit/${slug}`);
+      return;
+    }
+    loadPage(slug);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const addCommentHandler = () => {
     createNewComment(user);
+    //history.push(`/topic/edit/${slug}`);
     history.push('/comment');
   };
 
-  return (
-    <div className="section mt-0 pt-0">
-      <h2 className="title">{page?.title}</h2>
-      {page?.ownerName ? <p>created by: {page?.ownerName}</p> : null}
+  if (!page) return null;
 
-      <ReactMarkdown source={page?.content} escapeHtml={false} />
+  return (
+    <div>
+      <div className="level mb-0">
+        <div className="level-left">
+          <h2 className="title level-item mb-0 pb-0">{page?.title}</h2>
+        </div>
+        <div className="level-right">
+          <UserMatchOrAdmin user={user} id={page?.ownerId}>
+            <Link to={`/topic/edit/${slug}`} className="button is-link is-light level-item">
+              <MdModeEdit />
+            </Link>
+          </UserMatchOrAdmin>
+        </div>
+      </div>
+      {page?.ownerName ? <p>created by: {page?.ownerName}</p> : null}
+      <div class="content mt-2">
+        <ReactMarkdown source={page.content} escapeHtml={false} />
+      </div>
       <hr className="mt-3 mb-3" />
 
-      <h4 className="mt-1 is-size-5">Comments</h4>
-
-      {user ? (
-        <button className="float-right btn btn-link" onClick={addCommentHandler}>
-          <GoPlus className="larger text-secondary mb-1" />
-        </button>
-      ) : null}
+      <div className="level mb-0">
+        <div className="level-left">
+          <h4 className="subtitle level-item mb-0 pb-0">Comments</h4>
+        </div>
+        <div className="level-right">
+          {user ? (
+            <button className="button is-link is-light level-item" onClick={addCommentHandler}>
+              <GoPlus className="larger text-secondary mb-1" />
+            </button>
+          ) : null}
+        </div>
+      </div>
 
       <Comments comments={page?.comments ? page.comments : []} />
     </div>
