@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useStoreState, useStoreActions } from 'easy-peasy';
@@ -6,15 +6,18 @@ import { useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers';
 
-import { Input, Submit, Select } from '../../_components';
+import { Input, Submit, Select, Confirmation, Commands, SubmitCommand, Command } from '../../_components';
 
 function AddEdit({ history, match }) {
   const user = useStoreState(s => s.aStore.editAccount);
   const create = useStoreActions(a => a.aStore.createAccount);
   const update = useStoreActions(a => a.aStore.updateAccount);
+  const deleteAccount = useStoreActions(a => a.aStore.deleteAccount);
   const getById = useStoreActions(a => a.aStore.getAccountById);
   const alertSuccess = useStoreActions(a => a.iStore.success);
   const alertError = useStoreActions(a => a.iStore.error);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
 
   const id = match.params.id;
   const isAddMode = !id;
@@ -105,7 +108,21 @@ function AddEdit({ history, match }) {
     resolver: yupResolver(validationSchema),
   });
 
-  const { handleSubmit } = formMethods;
+  const handleDelete = () => {
+    if (showDeleteConfirmation) return;
+    setShowDeleteConfirmation(true);
+  };
+
+  const handleDeleteResponse = async resp => {
+    if (resp) {
+      await deleteAccount(user.id);
+      history.push('..');
+      console.log('After Delete');
+    }
+    setShowDeleteConfirmation(false);
+  };
+
+  const { handleSubmit, isSubmitting } = formMethods;
 
   return (
     <div className="message mx-6">
@@ -138,14 +155,16 @@ function AddEdit({ history, match }) {
               <Input name="confirmPassword" label="Confirm Password" type="password" formMethods={formMethods} />
             </div>
           </div>
-
-          <Submit label="Save" formMethods={formMethods}>
-            <Link to={isAddMode ? '.' : '..'} className="button is-link is-light level-item">
-              Cancel
-            </Link>
-          </Submit>
+          <Commands>
+            <SubmitCommand label="Save" isBusy={isSubmitting} />
+            <Command label="Cancel" type="link" to={isAddMode ? '.' : '..'} />
+            {!isAddMode ? <Command label="Delete" onDo={handleDelete} isRight={true} /> : null}
+          </Commands>
         </div>
       </form>
+      <Confirmation isShown={showDeleteConfirmation} callback={handleDeleteResponse} title="Confirm Delete">
+        <div>Do your really want do delete this user?</div>
+      </Confirmation>
     </div>
   );
 }

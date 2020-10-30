@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers';
 import { useStoreActions } from 'easy-peasy';
-import { Input, Submit } from '../_components';
+import { Input, Commands, Command, SubmitCommand } from '../_components';
 
 const validationSchema = Yup.object().shape({
   password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
@@ -55,7 +55,7 @@ function ResetPassword({ history }) {
   });
 
   function getForm(formMethods) {
-    const { handleSubmit } = formMethods;
+    const { handleSubmit, isSubmitting } = formMethods;
 
     function onSubmit({ password, confirmPassword }, { setSubmitting }) {
       clearAlerts();
@@ -77,12 +77,10 @@ function ResetPassword({ history }) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input name="password" label="Password" type="password" formMethods={formMethods} />
         <Input name="confirmPassword" label="Confirm Password" type="password" formMethods={formMethods} />
-
-        <Submit label="Reset Password" formMethods={formMethods}>
-          <Link to="login" className="button is-link is-light level-item">
-            Cancel
-          </Link>
-        </Submit>
+        <Commands>
+          <SubmitCommand label="Reset Password" isBusy={isSubmitting} />
+          <Command label="Cancel" to="login" type="link" />
+        </Commands>
       </form>
     );
   }

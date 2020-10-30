@@ -80,7 +80,6 @@ export default function PageEdit() {
   };
 
   const handleCancelResponse = resp => {
-    console.log('DEBUG : PageEdit -> resp', resp);
     if (resp) {
       // discard changes
       history.push(`/topic/show/${page?.slug}`);

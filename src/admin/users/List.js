@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { useStoreState, useStoreActions } from "easy-peasy";
+import React, { useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useStoreState, useStoreActions } from 'easy-peasy';
+import { GoPlus } from 'react-icons/go';
 
 function List({ match }) {
-  const users = useStoreState((s) => s.aStore.accounts);
-  const getAllAccounts = useStoreActions((a) => a.aStore.getAllAccounts);
-  const setEditAccount = useStoreActions((a) => a.aStore.setEditAccount);
-  const deleteAccount = useStoreActions((a) => a.aStore.deleteAccount);
+  const users = useStoreState(s => s.aStore.accounts);
+  const getAllAccounts = useStoreActions(a => a.aStore.getAllAccounts);
+  const setEditAccount = useStoreActions(a => a.aStore.setEditAccount);
   const { path } = match;
 
   const history = useHistory();
@@ -16,10 +16,6 @@ function List({ match }) {
     // eslint-disable-next-line
   }, []);
 
-  function deleteUser(id) {
-    deleteAccount(id);
-  }
-
   function editUser(user) {
     setEditAccount(user);
     history.push(`${path}/edit/${user.id}`);
@@ -27,57 +23,36 @@ function List({ match }) {
 
   return (
     <div>
-      <h1>Users</h1>
-      <p>All users from secure (admin only) api end point:</p>
-      <Link to={`${path}/add`} className="btn btn-sm btn-success mb-2">
-        Add User
-      </Link>
-      <table className="table table-striped">
+      <div className="level is-vcentered">
+        <div className=" level-left">
+          <div className="level-item">
+            <h1 className="title is-size-2 mb-0">Users</h1>
+          </div>
+        </div>
+        <div className="level-right">
+          <Link to={`${path}/add`} className="button is-light level-item">
+            <GoPlus />
+          </Link>
+        </div>
+      </div>
+      <p className="mb-3">All users from secure (admin only) api end point:</p>
+      <table className="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
-            <th style={{ width: "30%" }}>Username</th>
-            <th style={{ width: "30%" }}>Email</th>
-            <th style={{ width: "30%" }}>Role</th>
-            <th style={{ width: "10%" }}></th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
           </tr>
         </thead>
         <tbody>
           {users &&
-            users.map((user) => (
-              <tr key={user.id}>
+            users.map(user => (
+              <tr key={user.id} onClick={() => editUser(user)}>
                 <td>{user.userName}</td>
                 <td>{user.email}</td>
                 <td>{user.role}</td>
-                <td style={{ whiteSpace: "nowrap" }}>
-                  <button
-                    onClick={() => editUser(user)}
-                    style={{ width: "60px" }}
-                    className="btn btn-sm btn-primary mr-1"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => deleteUser(user.id)}
-                    className="btn btn-sm btn-danger"
-                    style={{ width: "60px" }}
-                    disabled={user.isDeleting}
-                  >
-                    {user.isDeleting ? (
-                      <span className="spinner-border spinner-border-sm"></span>
-                    ) : (
-                      <span>Delete</span>
-                    )}
-                  </button>
-                </td>
               </tr>
             ))}
-          {!users && (
-            <tr>
-              <td colSpan="4" className="text-center">
-                <span className="spinner-border spinner-border-lg align-center"></span>
-              </td>
-            </tr>
-          )}
         </tbody>
       </table>
     </div>

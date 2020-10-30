@@ -1,9 +1,6 @@
 import React from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import PageSummary from './PageSummary';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import { GoPlus } from 'react-icons/go';
 import { useHistory } from 'react-router-dom';
 
@@ -24,7 +21,7 @@ export default function Pages() {
 
   return (
     <div>
-      <div className="level">
+      <div className="level is-vcentered">
         <div className=" level-left">
           <h2 className="title  is-size-2">Documentation</h2>
         </div>

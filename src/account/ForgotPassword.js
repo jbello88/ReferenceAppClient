@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers';
 import * as Yup from 'yup';
 import { useStoreActions } from 'easy-peasy';
-import { Input, Submit } from '../_components';
+import { Input, Commands, Command, SubmitCommand } from '../_components';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Email is invalid').required('Email is required'),
@@ -21,7 +21,7 @@ function ForgotPassword() {
     resolver: yupResolver(validationSchema),
   });
 
-  const { handleSubmit } = formMethods;
+  const { handleSubmit, isSubmitting } = formMethods;
 
   function onSubmit({ email }) {
     clearAlerts();
@@ -41,11 +41,10 @@ function ForgotPassword() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="section">
           <Input name="email" label="Email" formMethods={formMethods} />
-          <Submit label="Forgot Password" formMethods={formMethods}>
-            <Link to="login" className="button is-link is-light level-item">
-              Cancel
-            </Link>
-          </Submit>
+          <Commands>
+            <SubmitCommand label="Forgot Password" isBusy={isSubmitting} />
+            <Command label="Cancel" to="login" type="link" />
+          </Commands>
         </div>
       </form>
     </div>

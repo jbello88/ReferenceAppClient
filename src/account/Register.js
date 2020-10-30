@@ -1,10 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers';
 import { useStoreActions } from 'easy-peasy';
-import { Input, Submit } from '../_components';
+import { Input, Commands, Command, SubmitCommand } from '../_components';
 
 const validationSchema = Yup.object().shape({
   userName: Yup.string().required('Username is required'),
@@ -25,7 +24,7 @@ function Register({ history }) {
     resolver: yupResolver(validationSchema),
   });
 
-  const { handleSubmit } = formMethods;
+  const { handleSubmit, isSubmitting } = formMethods;
 
   function onSubmit(data) {
     registerUser(data)
@@ -57,12 +56,10 @@ function Register({ history }) {
               <Input name="confirmPassword" label="Confirm Password" type="password" formMethods={formMethods} />
             </div>
           </div>
-
-          <Submit label="Register" formMethods={formMethods}>
-            <Link to="login" className="button is-link is-light level-item">
-              Cancel
-            </Link>
-          </Submit>
+          <Commands>
+            <SubmitCommand label="Register" isBusy={isSubmitting} />
+            <Command label="Cancel" type="link" to="login" />
+          </Commands>
         </div>
       </form>
     </div>
