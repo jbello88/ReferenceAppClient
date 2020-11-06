@@ -9,12 +9,14 @@ export function CommandWithConfirmation({
   doOnCancel = () => {},
   doOnCancelAsync,
   showWhen = () => true,
+  showWhenAsync,
   type = 'button',
   to,
   isRight = false,
   colorClass,
   children,
   title,
+  defaultYes = true,
 }) {
   let tmpChildren;
 
@@ -33,7 +35,7 @@ export function CommandWithConfirmation({
 
   const handleConfirmationResponse = async resp => {
     try {
-      setShow(false);
+      if (show) setShow(false);
 
       if (resp) {
         if (doOnAsync) {
@@ -59,14 +61,21 @@ export function CommandWithConfirmation({
 
   const handleClick = async () => {
     if (show) return;
-    setShow(true);
+    let shouldShow = showWhen();
+    if (showWhenAsync) shouldShow = await showWhenAsync();
+    if (shouldShow) {
+      setShow(true);
+      return;
+    }
+
+    await handleConfirmationResponse(defaultYes);
   };
 
   return (
     <>
       <Command label={label} handleClick={handleClick} isRight={isRight} busy={isBusy} />
 
-      <Confirmation isShown={show} callback={handleConfirmationResponse} title={title}>
+      <Confirmation isShown={show} callback={handleConfirmationResponse} title={title} defaultYes={defaultYes}>
         {confirmationContent}
       </Confirmation>
     </>

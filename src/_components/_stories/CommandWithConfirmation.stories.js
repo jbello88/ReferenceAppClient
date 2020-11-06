@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { storiesOf } from '@storybook/react';
 //import { action } from '@storybook/addon-actions';
@@ -10,6 +10,14 @@ const doAsync = async () => {
   console.log('doAsync started');
   await timeout(2000);
   console.log('doAsync ended');
+};
+
+const toggle = () => {
+  const d = new Date();
+  const n = d.getSeconds();
+  console.log(n);
+
+  return n % 2 === 0;
 };
 
 storiesOf('Building Blocks', module)
@@ -44,6 +52,32 @@ storiesOf('Building Blocks', module)
       doOnAsync={doAsync}
       doOnCancelAsync={doAsync}
       title="Please Confirm!"
+    >
+      <ConfirmationContent>
+        <div>Please confirm your input.</div>
+      </ConfirmationContent>
+    </CommandWithConfirmation>
+  ))
+  .add('Command with Confirmation default No', () => (
+    <CommandWithConfirmation
+      label="Command with Confirmation Yes and No-Async"
+      doOnAsync={doAsync}
+      doOnCancelAsync={doAsync}
+      title="Please Confirm!"
+      defaultYes={false}
+    >
+      <ConfirmationContent>
+        <div>Please confirm your input.</div>
+      </ConfirmationContent>
+    </CommandWithConfirmation>
+  ))
+  .add('Command with Confirmation when second is even', () => (
+    <CommandWithConfirmation
+      label="Command with Confirmation  when second is even"
+      doOnAsync={doAsync}
+      doOnCancelAsync={doAsync}
+      title="Please Confirm!"
+      showWhen={toggle}
     >
       <ConfirmationContent>
         <div>Please confirm your input.</div>
